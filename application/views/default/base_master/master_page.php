@@ -5,6 +5,7 @@
         <?php echo $header_master_page; ?>
         <?php echo $header_page; ?>
     </head>
+    
     <body class="no-skin">
         <div id="navbar" class="navbar navbar-default">
             <script type="text/javascript">
