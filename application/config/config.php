@@ -35,7 +35,7 @@ $config['base_url'] = '';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +64,7 @@ $config['uri_protocol']	= 'REQUEST_URI';
 |
 | https://codeigniter.com/user_guide/general/urls.html
 */
-$config['url_suffix'] = '';
+$config['url_suffix'] = '.html';
 
 /*
 |--------------------------------------------------------------------------
@@ -100,7 +100,7 @@ $config['charset'] = 'UTF-8';
 | setting this variable to TRUE (boolean).  See the user guide for details.
 |
 */
-$config['enable_hooks'] = FALSE;
+$config['enable_hooks'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
