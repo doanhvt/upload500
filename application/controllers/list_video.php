@@ -1,6 +1,6 @@
 <?php
 
-class Home extends MY_Controller {
+class List_video extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -9,8 +9,8 @@ class Home extends MY_Controller {
     public function index() {
         $data = Array();
 //        $data['user_name'] = $this->session->userdata('username');
-        $content = $this->load->view($this->path_theme_view . "home/index", $data, true);
-        $header_page = NULL; /* Dữ liệu đẩy thêm vào thẻ <head> (css, js, meta property) */
+        $content = $this->load->view($this->path_theme_view . "list_video/index", $data, true);
+        $header_page = $this->load->view($this->path_theme_view . "list_video/header", $data, true);
         $title = NULL;
         $description = NULL;
 
