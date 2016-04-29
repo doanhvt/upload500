@@ -84,6 +84,9 @@ window.jQuery || document.write("<script src='assets/js/jquery1x.min.js'>"+"<"+"
 <script src="<?php echo $this->path_theme_file; ?>assets/js/ace-elements.min.js"></script>
 <script src="<?php echo $this->path_theme_file; ?>assets/js/ace.min.js"></script>
 
+
+<script src="<?php echo $this->path_theme_file; ?>assets/src/bootstrap-filestyle.min.js"></script>
+
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     jQuery(function ($) {

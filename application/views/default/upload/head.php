@@ -1,0 +1,1 @@
+<script src="<?php echo $this->path_theme_file; ?>upload/js/upload.js"></script>
