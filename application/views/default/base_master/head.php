@@ -10,7 +10,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="<?php echo $this->path_theme_file; ?>assets/font-awesome/4.2.0/css/font-awesome.min.css" />
 
+
 <!-- page specific plugin styles -->
+<link rel="stylesheet" href="<?php echo $this->path_theme_file; ?>assets/css/daterangepicker.min.css" />
+<link rel="stylesheet" href="<?php echo $this->path_theme_file; ?>assets/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="<?php echo $this->path_theme_file; ?>assets/css/bootstrap-timepicker.min.css" />
+<link rel="stylesheet" href="<?php echo $this->path_theme_file; ?>assets/css/datepicker.min.css" />
 
 <!-- text fonts -->
 <link rel="stylesheet" href="<?php echo $this->path_theme_file; ?>assets/fonts/fonts.googleapis.com.css" />
@@ -72,6 +77,10 @@ window.jQuery || document.write("<script src='assets/js/jquery1x.min.js'>"+"<"+"
 <!--[if lte IE 8]>
   <script src="assets/js/excanvas.min.js"></script>
 <![endif]-->
+<script src="<?php echo $this->path_theme_file; ?>assets/js/bootstrap-datepicker.min.js"></script>
+<script src="<?php echo $this->path_theme_file; ?>assets/js/bootstrap-datetimepicker.min.js"></script>
+<script src="<?php echo $this->path_theme_file; ?>assets/js/bootstrap-timepicker.min.js"></script>
+<script src="<?php echo $this->path_theme_file; ?>assets/js/daterangepicker.min.js"></script>
 <script src="<?php echo $this->path_theme_file; ?>assets/js/jquery-ui.custom.min.js"></script>
 <script src="<?php echo $this->path_theme_file; ?>assets/js/jquery.ui.touch-punch.min.js"></script>
 <script src="<?php echo $this->path_theme_file; ?>assets/js/jquery.easypiechart.min.js"></script>
@@ -85,7 +94,7 @@ window.jQuery || document.write("<script src='assets/js/jquery1x.min.js'>"+"<"+"
 <script src="<?php echo $this->path_theme_file; ?>assets/js/ace.min.js"></script>
 
 <!-- inline scripts related to this page -->
-<script type="text/javascript">
+<!--<script type="text/javascript">
     jQuery(function ($) {
         $('.easy-pie-chart.percentage').each(function () {
             var $box = $(this).closest('.infobox');
@@ -307,4 +316,4 @@ window.jQuery || document.write("<script src='assets/js/jquery1x.min.js'>"+"<"+"
         });
 
     })
-</script>
+</script>-->
