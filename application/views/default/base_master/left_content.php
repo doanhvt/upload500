@@ -30,7 +30,7 @@
     </li>
 
     <li class="">
-        <a href="#" class="dropdown-toggle">
+        <a href="<?php echo site_url('upload');?>">
             <i class="menu-icon fa fa-upload"></i>
             <span class="menu-text">
                 Upload video
