@@ -40,7 +40,13 @@ class List_video extends MY_Controller {
         $this->master_page($content, $header_page, $title, $description);
     }
     public function normal_search(){
-        var_dump($this->input->post());exit;
+        if($this->input->post('search_value') != ''){
+            
+        }
+        $data_return = array(
+            'table_body' =>''
+        );
+        echo json_encode($data_return);
     }
 
 }

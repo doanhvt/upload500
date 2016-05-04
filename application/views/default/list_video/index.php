@@ -111,7 +111,7 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id='table_id'>
                     <?php
                     $count = 1;
                     foreach ($list_video as $item) {

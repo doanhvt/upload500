@@ -17,7 +17,7 @@ $(document).ready(function () {
                 search_value: search_value
             },
             success: function (data) {
-                console.log(data);
+                $('#table_id').html(data.table_body);
             }
         });
     })
