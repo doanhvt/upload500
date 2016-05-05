@@ -14,8 +14,6 @@ class Upload extends MY_Controller {
 //        $this->load->library('upload');
     }
 
-
-
     public function index() {
         $data = Array();
         $data['ajax_link'] = site_url('upload/do_upload_videos');
@@ -28,40 +26,43 @@ class Upload extends MY_Controller {
     }
 
     public function do_upload_videos() {
-
 //        $path = './uploads';
-//        $files = $_FILES;
-//        $total_videos = count($_FILES['userfile']['name']);
-        $type = $_FILES['userfile']['type'];
+        $files = $_FILES;
+        $total_videos = count($_FILES['userfile']['name']);
+        $type = $_FILES['userfile']['name'];
         $data_post = $this->input->post();
+        var_dump($data_post);
+        die();
+//        $config = $this->__set_upload_options();
+        $this->load->library('upload');
+//        $this->upload->initialize($config);
+//        if ($this->upload->do_multi_upload("userfile")) {
+//            $data['upload_data'] = $this->upload->get_multi_upload_data();
+//            echo '<p class = "bg-success">' . count($data['upload_data']) . 'File(s) successfully uploaded.</p>';
+//        } else {
+//            $errors = array('error' => $this->upload->display_errors('<p class = "bg-danger">', '</p>'));
+//            foreach ($errors as $k => $error) {
+//                echo $error;
+//            }
+//        }
 
-        $config = $this->__set_upload_options();
-        $this->load->library('myupload');
-        $this->myupload->initialize($config);
-        if ($this->myupload->do_multi_upload("userfile")) {
-            $data['upload_data'] = $this->myupload->get_multi_upload_data();
-            echo '<p class = "bg-success">' . count($data['upload_data']) . 'File(s) successfully uploaded.</p>';
-        } else {
-            $errors = array('error' => $this->myupload->display_errors('<p class = "bg-danger">', '</p>'));
-            foreach ($errors as $k => $error) {
-                echo $error;
-            }
+
+        $file_path = array();
+        for ($i = 0; $i < $total_videos; ++$i) {
+            $_FILES['userfile']['name'] = $files['userfile']['name'] [$i];
+            $_FILES['userfile']['type'] = $files ['userfile']['type'] [$i];
+            $_FILES['userfile']['tmp_name'] = $files ['userfile']['tmp_name'] [$i];
+            $_FILES['userfile']['error'] = $files ['userfile']['error'] [$i];
+            $_FILES['userfile']['size'] = $files['userfile']['size'] [$i];
+
+            $this->upload->initialize($this->__set_upload_options());
+            $file_path[] = $this->upload->do_upload('userfile');
+            $file_path[] = $this->upload->data();
+//            $file_path[] = base_url("img/$name_video");
         }
 
 
-//        $file_path = array();
-//        for ($i = 0; $i < $total_videos; ++$i) {
-//            $name_video = $_FILES['userfile']['name'] = $files['userfile']['name'] [$i];
-//            $_FILES['userfile']['type'] = $files ['userfile']['type'] [$i];
-//            $_FILES['userfile']['tmp_name'] = $files ['userfile']['tmp_name'] [$i];
-//            $_FILES['userfile']['error'] = $files ['userfile']['error'] [$i];
-//            $_FILES['userfile']['size'] = $files['userfile']['size'] [$i];
-//
-//            $this->upload->initialize($this->__set_upload_options());
-//            $this->upload->do_upload('userfile');
-//            $file_path[] = base_url("img/$name_video");
-//        }
-//
+//        echo '<pre>';
 //        var_dump($file_path);
 //        $temp_video = $this->upload->do_multi_upload("userfile");
 //        $this->upload->do_upload ($_FILES['userfile']);
@@ -87,6 +88,10 @@ class Upload extends MY_Controller {
 
     public function check_data() {
         $number_file = $this->input->post('number');
+        $user_profile = json_decode($this->session->userdata('user_profile'));
+//        $name = isset($user_profile) ? $user_profile[0]->email : "";
+        $userID = isset($user_profile) ? $user_profile[0]->id : "";
+        $name = 'tungnd@topica.edu.vn';
         $data_return = array();
         if (isset($number_file)) {
             $select = "";
@@ -97,7 +102,7 @@ class Upload extends MY_Controller {
                 $select .= "<td class='text-center' style='line-height: 55px;'> video " . $j . "</td>";
                 $select .= '<td style="width: 10%;" id="date' . $i . '">
                                 <div class="input-group input-group-sm" style="padding-top: 6px;">
-                                    <input type="text" id="datepicker-' . $i . '" class="form-control date" name="study_date"/>
+                                    <input type="text" id="datepicker-' . $i . '" class="form-control date" name="date_' . $i . '"/>
                                     <span class="input-group-addon">
                                         <i class="ace-icon fa fa-calendar"></i>
                                     </span>
@@ -109,13 +114,15 @@ class Upload extends MY_Controller {
                 $select .= "<td></td>";
                 $select .= "<td></td>";
                 $select .= "<td></td>";
-                $select .= "<td></td>";
-                $select .= '<td><input type="hidden" size="10" id="code_v' . $i . '" name="video_code" value="" />'
+                $select .= '<td><textarea rows="2" id="note" name="note" role="textbox" multiline="true" class="editable"></textarea></td>';
+                $select .= '<td><input type="hidden" size="10" id="code_v' . $i . '" name="video_code_' . $i . '" value="" />'
                         . '<p id="video"><span id="code' . $i . '"></span><span id="time_app_' . $i . '"></span>'
                         . '<span id="class_app_' . $i . '"><span>'
                         . '</p>'
                         . '</td>';
-                $select .= "<td></td>";
+                $select .= '<td><input type="hidden" name="userid" value="' . $userID . '"/>'
+                        . '<p id="email"><span>' . $name . '</span></p>'
+                        . '</td>';
                 $select .= "<td class='center'>
                                 
                             </td>";
@@ -135,30 +142,35 @@ class Upload extends MY_Controller {
                         val = val.replace("/", "");
                         val = val.replace("/", "");
                         $("#code' . $i . '").text(val + "_");
-                        $("#code_v' . $i . '").attr("value",val + "_");
-                        $("#code_v' . $i . '").attr("val_app",val + "_");
-                        $(".time_type_' . $i . '").prop("disabled", false); 
+                        var date = $("#code' . $i . '").text();
+                        var time = $("#time_app_' . $i . '").text();
+                        var cl = $("#class_app_' . $i . '").text(); 
+                        var tem = date + time + cl;    
+                        $("#code_v' . $i . '").attr("value",tem);    
+                        $(".time_type_' . $i . '").prop("disabled", false);    
                     });
-                    var time_type = "";
+                    
                     $(".time_type_' . $i . '").change(function(){
                         var temp = $(this).val();
                         time_type = temp;
                         $("#time_app_' . $i . '").text(temp + "_");
-                        var val_code_video = $("#code_v' . $i . '").attr("val_app");
-                        var date_time = val_code_video + time_type;  
-                        $("#code_v' . $i . '").attr("value",date_time);
-                        $("#code_v' . $i . '").attr("val_app_dt",date_time + "_");
-                        $(".class_type_' . $i . '").prop("disabled", false);
-                        $("#datepicker-' . $i . '").prop("disabled", true);    
+                        var date = $("#code' . $i . '").text();
+                        var time = $("#time_app_' . $i . '").text();
+                        var cl = $("#class_app_' . $i . '").text(); 
+                        var tem = date + time + cl;
+                        $("#code_v' . $i . '").attr("value",tem);  
+                        $(".class_type_' . $i . '").prop("disabled", false);    
                     });
                                         
                     $(".class_type_' . $i . '").change(function(){
                         var cl_type = $(this).val();
                         $("#class_app_' . $i . '").text(cl_type + "_");
-                        var val_code_video_1 = $("#code_v' . $i . '").attr("val_app_dt");
-                        var date_time_class = val_code_video_1 + cl_type;
+                        var date = $("#code' . $i . '").text();
+                        var time = $("#time_app_' . $i . '").text();
+                        var cl = $("#class_app_' . $i . '").text(); 
+                        var tem = date + time + cl;
+                        $("#code_v' . $i . '").attr("value",tem); 
                         $("#code_v' . $i . '").attr("value",date_time_class);
-                        $(".time_type_' . $i . '").prop("disabled", true);        
                     });
                     </script>';
                 $j++;
@@ -182,7 +194,7 @@ class Upload extends MY_Controller {
 
     public function time_study($i) {
         $html = "";
-        $html .= "<select name='time' id='number' class='time_type_$i' disabled='disabled'>";
+        $html .= "<select name='time_$i' id='number' class='time_type_$i' disabled>";
         $html .= '<option selected="selected">---</option>';
         $time = $this->m_time->get_time();
         if (isset($time)) {
@@ -199,7 +211,7 @@ class Upload extends MY_Controller {
     public function class_type($i) {
         $class = $this->m_class->get_class();
         $html_class = "";
-        $html_class = "<select name='class' id='number' class='class_type_$i' disabled='disabled'>";
+        $html_class = "<select name='class_$i' id='number' class='class_type_$i' disabled>";
         $html_class .= '<option selected="selected">---</option>';
         if (isset($class)) {
             foreach ($class as $key_class => $value_class) {
