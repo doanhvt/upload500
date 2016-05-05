@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-xs-12"> 
         <div>
-            <form id="normal-search-form"  url="<?php echo base_url('list_video/normal_search'); ?>" class="navbar-form navbar-right" >
+            <form id="normal-search-form" method="get" action="<?php echo base_url('list_video/normal_search'); ?>" class="navbar-form navbar-right" >
                 <div class="input-group">
-                    <input name="normal-search-input" type="" placeholder="Search by teacher's name, assitant's name, email" class="form-control" style="width:400px;border-radius:4px 0px 0px 4px !important;"/>
+                    <input name="q"  placeholder="Search by teacher's name, assitant's name, email" class="form-control" style="width:400px;border-radius:4px 0px 0px 4px !important;"/>
                     <div class="input-group-btn">
-                        <button id="normal-search-btn" class="btn btn-info" style="border:1px solid #F5F5F5;border-radius:0px 4px 4px 0px !important;">
+                        <button id="normal-search-btn" class="btn btn-info" style="border:1px solid #F5F5F5;border-radius:0px 4px 4px 0px !important;background-color: #810c15 !important;">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </div>
@@ -14,7 +14,7 @@
         </div>
         <div class="clearfix">
         </div>
-        <h3 class="header smaller lighter blue"><a id='advanced-search' href='#' style="padding:3px;text-decoration: none;background-color:#307ECC;color:white;" href="#">Advanced search &nbsp;&nbsp;&nbsp;<b class="arrow fa fa-angle-down">&nbsp;</b></a></h3>
+        <h3 class="header smaller lighter blue"><a id='advanced-search' href='#' style="background-color: #810c15;padding:3px;text-decoration: none;color:white;" href="#">Advanced search &nbsp;&nbsp;&nbsp;<b class="arrow fa fa-angle-down">&nbsp;</b></a></h3>
         <div class="clearfix">
             <div class="pull-right tableTools-container"></div>
         </div>
@@ -68,10 +68,10 @@
                 </div>
                 <div style="width: 10%;float: left;">
                     <div class="form-group">
-                        <input class="input-sm" style="margin-top:26px;background-color: #307ECC;color:white;" type="submit" class="form-control" id="submit" value='FILTER'>
+                        <input class="input-sm" style="margin-top:26px;background-color: #810c15;color:white;" type="submit" class="form-control" id="submit" value='FILTER'>
                     </div>
                     <div class="form-group">
-                        <input class='input-sm' style="margin-top:30px;background-color: #307ECC;color:white;" type="button" class="form-control" value='RESET'>
+                        <input class='input-sm' style="margin-top:30px;background-color: #810c15;color:white;" type="button" class="form-control" value='RESET'>
                     </div>
                 </div>
                 <!--                <div class="input-daterange input-group">
@@ -85,7 +85,7 @@
         </div>
         <div class="clearfix">
         </div>
-        <div class="table-header">
+        <div class="table-header" style="background-color: #810c15;">
             Results
         </div>
 
