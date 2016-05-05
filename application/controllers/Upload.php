@@ -14,6 +14,8 @@ class Upload extends MY_Controller {
 //        $this->load->library('upload');
     }
 
+
+
     public function index() {
         $data = Array();
         $data['ajax_link'] = site_url('upload/do_upload_videos');
@@ -26,21 +28,21 @@ class Upload extends MY_Controller {
     }
 
     public function do_upload_videos() {
+
 //        $path = './uploads';
 //        $files = $_FILES;
 //        $total_videos = count($_FILES['userfile']['name']);
         $type = $_FILES['userfile']['type'];
         $data_post = $this->input->post();
-//        var_dump($data_post);
-//        die();
+
         $config = $this->__set_upload_options();
-        $this->load->library('upload');
-        $this->upload->initialize($config);
-        if ($this->upload->do_multi_upload("userfile")) {
-            $data['upload_data'] = $this->upload->get_multi_upload_data();
+        $this->load->library('myupload');
+        $this->myupload->initialize($config);
+        if ($this->myupload->do_multi_upload("userfile")) {
+            $data['upload_data'] = $this->myupload->get_multi_upload_data();
             echo '<p class = "bg-success">' . count($data['upload_data']) . 'File(s) successfully uploaded.</p>';
         } else {
-            $errors = array('error' => $this->upload->display_errors('<p class = "bg-danger">', '</p>'));
+            $errors = array('error' => $this->myupload->display_errors('<p class = "bg-danger">', '</p>'));
             foreach ($errors as $k => $error) {
                 echo $error;
             }

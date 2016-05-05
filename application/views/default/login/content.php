@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="hr hr-18 dotted hr-double"></div>
-
+    <p class="h3 text-center" style="color:#810c15;"><?php if($this->session->flashdata('msg_error')){ echo $this->session->flashdata('msg_error'); }?></p>
     <div class="row" style="padding-top: 10%;">
         <div class="col-md-12">
             <div class="col-md-offset-3 col-md-6"  style="background: #F1F1F1;-webkit-border-radius: 5px;

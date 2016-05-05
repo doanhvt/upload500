@@ -23,11 +23,12 @@
             <li class="light-blue">
                 <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                     <img class="nav-user-photo" src="<?php echo $this->path_theme_file; ?>assets/avatars/user.jpg" alt="Jason's Photo" />
-                    <span class="user-info">
-                        <small>Welcome,</small>
-                        Jason
+                    <?php $infoUser = json_decode($this->session->userdata('user_profile'));
+                        if($infoUser){ ?>
+                    <span class="user-info" style="    top: 15px;">
+                        <span><?php echo $infoUser[0]->email;?></span>
                     </span>
-
+                    <?php } ?>
                     <i class="ace-icon fa fa-caret-down"></i>
                 </a>
 
@@ -49,7 +50,7 @@
                     <li class="divider"></li>
 
                     <li>
-                        <a href="#">
+                        <a href="<?php echo site_url('login/logout');?>">
                             <i class="ace-icon fa fa-power-off"></i>
                             Logout
                         </a>
