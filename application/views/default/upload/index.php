@@ -78,6 +78,19 @@
         padding: 5px 7px;
         white-space: nowrap;
     }
+    #email{
+        margin-top: 16px;
+        height: 30px;
+        border: 1px solid #810c15;
+        background: #FFF;
+        margin-top: 10px;
+        width: 100px;
+        padding: 5px 7px;
+        white-space: nowrap;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 
 </style>
 
@@ -107,14 +120,27 @@
             </div>
             <div class="form-group"> 
                 <div class="col-md-3">
-                    <button type="submit" class="btn btn-default">Upload</button>
+                    <button type="submit" class="btn btn-default" id="btn-sbm">Upload</button>
                 </div>
             </div>
 
         </div>
     </div>
+    <div class="row" style="height: 80px;padding: 10px;">
+        <div class="col-md-12">
+            <p class="text-center" id="Iswait" style="display: none;font-weight: bold;">
+                <label class="text-center">Vui lòng đợi</label> <br/>
+                <img style="width: 6%;" src="<?php echo $this->path_theme_file; ?>upload/img/LoaderIcon.gif" alt="" title=""/>
+            </p>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 0%;position: relative;">
+        <div class="col-md-12" id="wait" style="position: absolute;z-index: 999;width: 98%;margin-left: 13px;height: 100%;background-color: rgba(192,192,195,0.5);top:38px;display: none;">
+            <p class="text-center" style="padding-top: 52px;">
+                <img src="<?php echo $this->path_theme_file; ?>upload/img/loading-spiral.gif" alt="" title=""/>
+            </p>
+        </div>
 
-    <div class="row" style="margin-top: 5%;">
         <div class="col-md-12">
             <div class="table-header" style="background: #810c15;">
                 Upload Infomation 
@@ -190,9 +216,3 @@
             </div>
         </div>
 </form>-->
-
-<!--http://jsfiddle.net/Vs5Hk/2/-->
-<!--https://jsfiddle.net/api/mdn/-->
-<!--http://stackoverflow.com/questions/3654179/retrieving-file-names-out-of-a-multi-file-upload-control-with-javascript-->
-<!--http://click4knowledge.com/upload-multiple-images-using-jquery-ajax-php.html-->
-<!--https://www.youtube.com/watch?v=flaiEXVkdgE-->

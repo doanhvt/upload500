@@ -23,15 +23,29 @@ $(document).ready(function () {
     });
 
     /* ajax xử lý upload */
+    $(document).on("click","#btn-sbm", function (){
+        var file_upload = $('#isfile').val();
+        if(file_upload != ""){
+            
+        }else{
+            alert("File không được để trống.");
+        }
+        
+    });
     $(document).on("submit", ".e_form_submit", function (e) {
         e.preventDefault();
         var obj = $(this);
+        $('#Iswait').show();
+        $('#wait').show();
         obj.ajaxSubmit({
             type: "POST",
             dataType: 'json',
             async: false,
             success: function (result) {
-
+                if (result) {
+//                    $('#Iswait').hide();
+//                    $('#wait').hide();
+                }
             }, error: function () {
 
             }, complete: function () {
@@ -49,7 +63,7 @@ $(document).ready(function () {
 //        var val = $(this).val();
 //        $("#code' . $i . '").text(val);
 //    });
-    
+
 });
 
 function get_select_time(count_file) {

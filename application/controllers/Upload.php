@@ -11,7 +11,9 @@ class Upload extends MY_Controller {
         parent::__construct();
         $this->load->model('m_time');
         $this->load->model('m_class');
-//        $this->load->library('upload');
+        $this->load->library('upload');
+        $this->load->model('m_upload');
+//        $this->load->library('form_validation');
     }
 
     public function index() {
@@ -21,54 +23,56 @@ class Upload extends MY_Controller {
         $header_page = $this->load->view($this->path_theme_view . "upload/head", $data, true);
         $title = NULL;
         $description = NULL;
-
         $this->master_page($content, $header_page, $title, $description);
     }
 
     public function do_upload_videos() {
-//        $path = './uploads';
         $files = $_FILES;
         $total_videos = count($_FILES['userfile']['name']);
         $type = $_FILES['userfile']['name'];
         $data_post = $this->input->post();
-        var_dump($data_post);
-        die();
-//        $config = $this->__set_upload_options();
-        $this->load->library('upload');
-//        $this->upload->initialize($config);
-//        if ($this->upload->do_multi_upload("userfile")) {
-//            $data['upload_data'] = $this->upload->get_multi_upload_data();
-//            echo '<p class = "bg-success">' . count($data['upload_data']) . 'File(s) successfully uploaded.</p>';
-//        } else {
-//            $errors = array('error' => $this->upload->display_errors('<p class = "bg-danger">', '</p>'));
-//            foreach ($errors as $k => $error) {
-//                echo $error;
-//            }
-//        }
 
-
-        $file_path = array();
+        // validate info input $data_post
+        $data = array();
+        $data_return = array();
         for ($i = 0; $i < $total_videos; ++$i) {
             $_FILES['userfile']['name'] = $files['userfile']['name'] [$i];
             $_FILES['userfile']['type'] = $files ['userfile']['type'] [$i];
             $_FILES['userfile']['tmp_name'] = $files ['userfile']['tmp_name'] [$i];
             $_FILES['userfile']['error'] = $files ['userfile']['error'] [$i];
             $_FILES['userfile']['size'] = $files['userfile']['size'] [$i];
-
             $this->upload->initialize($this->__set_upload_options());
-            $file_path[] = $this->upload->do_upload('userfile');
-            $file_path[] = $this->upload->data();
-//            $file_path[] = base_url("img/$name_video");
+            if ($this->upload->do_upload('userfile')) {
+                $temp_file = (object) $this->upload->data();
+                $file_name = $temp_file->file_name;
+                $type_file = $temp_file->file_type;
+                // Output data
+                $data['name'] = $file_name;
+                $data['link_video'] = base_url("uploads/$file_name");
+                $data['time_upload'] = date("Y-m-d H:i:s");
+                $data['class_date'] = $data_post['date_' . $i];
+                $data['time_id'] = $data_post['time_' . $i];
+                $data['class_id'] = $data_post['class_' . $i];
+                $data['video_code'] = $data_post['video_code_' . $i];
+                $data['format_file'] = $type_file;
+                $data['status_upload'] = '1';
+                // Insert data for current file
+                $message[$i]['success_' . $i] = $this->m_upload->add_video($data);
+                // Message thông báo
+                $data_return = array(
+                    'status' => TRUE,
+                    'msg' => $message[$i]
+                );
+                
+            } else {
+                $error[$i]['error' . $i] = $this->upload->display_errors();
+                $data_return = array(
+                    'status' => FALSE,
+                    'msg' => $error[$i]
+                );
+            }
         }
-
-
-//        echo '<pre>';
-//        var_dump($file_path);
-//        $temp_video = $this->upload->do_multi_upload("userfile");
-//        $this->upload->do_upload ($_FILES['userfile']);
-//        echo "<pre>";
-//        var_dump($number_of_files);
-//        
+        echo json_encode($data_return);
     }
 
     private function __set_upload_options() {
@@ -120,7 +124,7 @@ class Upload extends MY_Controller {
                         . '<span id="class_app_' . $i . '"><span>'
                         . '</p>'
                         . '</td>';
-                $select .= '<td><input type="hidden" name="userid" value="' . $userID . '"/>'
+                $select .= '<td><input type="hidden" name="userid' . $i . '" value="' . $userID . '"/>'
                         . '<p id="email"><span>' . $name . '</span></p>'
                         . '</td>';
                 $select .= "<td class='center'>
@@ -199,7 +203,7 @@ class Upload extends MY_Controller {
         $time = $this->m_time->get_time();
         if (isset($time)) {
             foreach ($time as $key => $value) {
-                $html .= '<option value="' . $value->time . '">' . $value->time . '</option>';
+                $html .= '<option value="' . $value->id . '">' . $value->time . '</option>';
             }
             $html .= '</select>';
             return $html;
@@ -215,7 +219,7 @@ class Upload extends MY_Controller {
         $html_class .= '<option selected="selected">---</option>';
         if (isset($class)) {
             foreach ($class as $key_class => $value_class) {
-                $html_class .= '<option value="' . $value_class->name . '">' . $value_class->name . '</option>';
+                $html_class .= '<option value="' . $value_class->id . '">' . $value_class->name . '</option>';
             }
             $html_class .= '</select>';
             return $html_class;
