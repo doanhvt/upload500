@@ -24,3 +24,16 @@ ls
 rm 2016-05-05/
 'rm –R 2016-05-05
 rm -rf 2016-05-05/
+git status
+git fetch origin
+git reset -h
+git reset --h
+git reset --hard
+git fetch origin
+git status
+git log
+git pull origin doanhvt
+git config --global user.email "doanhvt92@gmail.com"
+git config --global user.name "doanhvt"
+git pull origin doanhvt
+git push origin master
