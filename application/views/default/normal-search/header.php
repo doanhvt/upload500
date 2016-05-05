@@ -1,0 +1,1 @@
+<script src="<?php echo $this->path_theme_file; ?>assets/js/list_video.js"></script>

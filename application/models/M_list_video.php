@@ -50,7 +50,33 @@ class M_list_video extends CI_Model {
             return FALSE;
         }
     }
-    public function normal_search(){
-        
+    public function get_list_normal_search($value){
+        $this->db->select('vc.*');
+        $this->db->from('video_copy as vc');
+        $this->db->join('user as u','vc.user_id = u.id');
+        $this->db->like('u.display_name', $value);
+        $this->db->or_like('vc.assistant', $value); 
+        $this->db->or_like('u.email', $value); 
+        $query =  $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }else{
+            return FALSE;
+        }
+    }
+    public function normal_search($limit,$start,$value){
+        $this->db->select('vc.*');
+        $this->db->from('video_copy as vc');
+        $this->db->join('user as u','vc.user_id = u.id');
+        $this->db->like('u.display_name', $value);
+        $this->db->or_like('vc.assistant', $value); 
+        $this->db->or_like('u.email', $value); 
+        $this->db->limit($limit, $start);
+        $query =  $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        }else{
+            return FALSE;
+        }
     }
 }

@@ -18,6 +18,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 $('#table_id').html(data.table_body);
+                $('#pagination').html(data.links);
             }
         });
     })

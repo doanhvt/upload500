@@ -3,7 +3,7 @@
         <div>
             <form id="normal-search-form"  url="<?php echo base_url('list_video/normal_search'); ?>" class="navbar-form navbar-right" >
                 <div class="input-group">
-                    <input name="normal-search-input" type="" placeholder="Search by teacher's name, assitant's name, email" class="form-control" style="width:400px;border-radius:4px 0px 0px 4px !important;"/>
+                    <input name="normal-search-input" type="" placeholder="Search by teacher's name, assitant's name, email" class="form-control" style="width:400px;border-radius:4px 0px 0px 4px !important;" value="<?php echo isset($search_session) ? $search_session : ""; ?>"/>
                     <div class="input-group-btn">
                         <button id="normal-search-btn" class="btn btn-info" style="border:1px solid #F5F5F5;border-radius:0px 4px 4px 0px !important;">
                             <span class="glyphicon glyphicon-search"></span>
@@ -74,13 +74,13 @@
                         <input class='input-sm' style="margin-top:30px;background-color: #307ECC;color:white;" type="button" class="form-control" value='RESET'>
                     </div>
                 </div>
-                <!--                <div class="input-daterange input-group">
-                                    <input type="text" class="input-sm form-control" name='start' />
-                                    <span class='input-group-addon'>
-                                        <i class="fa fa-exchange"></i>
-                                    </span>
-                                    <input type='text' class='input-sm form-control'name='end'/>
-                                </div>-->
+<!--                <div class="input-daterange input-group">
+                    <input type="text" class="input-sm form-control" name='start' />
+                    <span class='input-group-addon'>
+                        <i class="fa fa-exchange"></i>
+                    </span>
+                    <input type='text' class='input-sm form-control'name='end'/>
+                </div>-->
             </form>
         </div>
         <div class="clearfix">
@@ -112,59 +112,7 @@
                     </tr>
                 </thead>
                 <tbody id='table_id'>
-                    <?php
-                    $count = 1;
-                    foreach ($list_video as $item) {
-                        ?>
-                        <tr>
-                            <td><?php echo $count; ?></td>
-                            <td><?php echo $item->time_upload; ?></td>
-                            <td><?php echo $item->class_date; ?></td>
-                            <td>
-                                <?php
-                                foreach ($list_time as $time_check) {
-                                    if ($item->time_id == $time_check->id) {
-                                        echo $time_check->start . ' - ' . $time_check->end;
-                                    }
-                                }
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                foreach ($list_class as $class_check) {
-                                    if ($item->class_id == $class_check->id) {
-                                        echo $class_check->name;
-                                    }
-                                }
-                                ?>
-                            </td>
-                            <td><?php echo $user_info->display_name; ?></td>
-                            <td><?php echo $item->assistant; ?></td>
-                            <td><?php echo $item->cameramen; ?></td>
-                            <td><?php echo $item->status_video; ?></td>
-                            <td><?php echo $item->note; ?></td>
-                            <td><?php echo $item->video_code; ?></td>
-                            <td><?php echo $user_info->email; ?></td>
-                            <td>
-                                <div class="hidden-sm hidden-xs action-buttons">
-                                    <a class="blue" href="#">
-                                        <i class="ace-icon fa fa-search-plus bigger-130"></i>
-                                    </a>
-
-                                    <a class="green" href="#">
-                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                    </a>
-
-                                    <a class="red" href="#">
-                                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php
-                        $count++;
-                    }
-                    ?>
+                    <?php echo $html; ?>
                 </tbody>
             </table>
             <div id="pagination" style="text-align: center;">
