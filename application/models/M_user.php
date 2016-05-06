@@ -32,5 +32,20 @@ class M_user extends CI_Model {
         }
     }
 
+    public function get_user_permissions($role_id){
+    	$permission = array();
+    	$this->db->select('*');
+    	$this->db->from('action');
+    	$this->db->where('role_id',$role_id);
+    	$query = $this->db->get();
+    	if($query->num_rows()>0){
+    		foreach ($query->result() as $value) {
+    			$permission[] = $value->name;
+    		}
+    		return $permission;
+    	}else{
+    		return FALSE;
+    	}
+    }
 
 }
