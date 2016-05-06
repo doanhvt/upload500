@@ -114,9 +114,9 @@ class Upload extends MY_Controller {
                             </td>';
                 $select .= "<td>" . $this->time_study($i) . "</td>";
                 $select .= "<td>" . $this->class_type($i) . "</td>";
-                $select .= "<td></td>";
-                $select .= "<td></td>";
-                $select .= "<td></td>";
+                $select .= '<td><input type="text" size="5" id="name_teacher" name="name_teacher" class="input_v"></td>';
+                $select .= '<td><input type="text" size="5" id="assistant" name="assistant" class="input_v"></td>';
+                $select .= '<td><input type="text" size="5" id="cameramen" name="cameramen" class="input_v"></td></td>';
                 $select .= "<td></td>";
                 $select .= '<td><textarea rows="2" id="note" name="note" role="textbox" multiline="true" class="editable"></textarea></td>';
                 $select .= '<td><input type="hidden" size="10" id="code_v' . $i . '" name="video_code_' . $i . '" value="" />'

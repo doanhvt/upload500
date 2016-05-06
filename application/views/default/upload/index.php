@@ -91,6 +91,10 @@
         text-overflow: ellipsis;
         overflow: hidden;
     }
+    .input_v{
+        height: 35px !important;
+        margin-top: 5px;
+    }
 
 </style>
 
