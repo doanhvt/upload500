@@ -147,7 +147,7 @@
                             <td><?php echo $user_info->email; ?></td>
                             <td>
                                 <div class="hidden-sm hidden-xs action-buttons">
-                                    <a class="blue" href="#">
+                                    <a class="blue" href="<?php echo site_url('list_video/view_video'); ?>">
                                         <i class="ace-icon fa fa-search-plus bigger-130"></i>
                                     </a>
 
