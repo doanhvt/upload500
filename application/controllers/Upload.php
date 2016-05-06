@@ -54,6 +54,10 @@ class Upload extends MY_Controller {
                 $data['time_id'] = $data_post['time_' . $i];
                 $data['class_id'] = $data_post['class_' . $i];
                 $data['video_code'] = $data_post['video_code_' . $i];
+                $data['note'] = $data_post['note_' . $i];
+                $data['name_teacher'] = $data_post['name_teacher_' . $i];
+                $data['assistant'] = $data_post['assistant_' . $i];
+                $data['cameramen'] = $data_post['cameramen_' . $i];
                 $data['format_file'] = $type_file;
                 $data['status_upload'] = '1';
                 // Insert data for current file
@@ -63,7 +67,6 @@ class Upload extends MY_Controller {
                     'status' => TRUE,
                     'msg' => $message[$i]
                 );
-                
             } else {
                 $error[$i]['error' . $i] = $this->upload->display_errors();
                 $data_return = array(
@@ -114,11 +117,11 @@ class Upload extends MY_Controller {
                             </td>';
                 $select .= "<td>" . $this->time_study($i) . "</td>";
                 $select .= "<td>" . $this->class_type($i) . "</td>";
-                $select .= '<td><input type="text" size="5" id="name_teacher" name="name_teacher" class="input_v"></td>';
-                $select .= '<td><input type="text" size="5" id="assistant" name="assistant" class="input_v"></td>';
-                $select .= '<td><input type="text" size="5" id="cameramen" name="cameramen" class="input_v"></td></td>';
+                $select .= '<td><input type="text" size="5" id="name_teacher_' . $i . '" name="name_teacher_' . $i . '" class="input_v"></td>';
+                $select .= '<td><input type="text" size="5" id="assistant_' . $i . '" name="assistant_' . $i . '" class="input_v"></td>';
+                $select .= '<td><input type="text" size="5" id="cameramen_' . $i . '" name="cameramen_' . $i . '" class="input_v"></td></td>';
                 $select .= "<td></td>";
-                $select .= '<td><textarea rows="2" id="note" name="note" role="textbox" multiline="true" class="editable"></textarea></td>';
+                $select .= '<td><textarea rows="2" id="note" name="note_' . $i . '" role="textbox" multiline="true" class="editable"></textarea></td>';
                 $select .= '<td><input type="hidden" size="10" id="code_v' . $i . '" name="video_code_' . $i . '" value="" />'
                         . '<p id="video"><span id="code' . $i . '"></span><span id="time_app_' . $i . '"></span>'
                         . '<span id="class_app_' . $i . '"><span>'
