@@ -23,48 +23,43 @@ $(document).ready(function () {
     });
 
     /* ajax xử lý upload */
-    $(document).on("click","#btn-sbm", function (){
-        var file_upload = $('#isfile').val();
-        if(file_upload != ""){
-            
-        }else{
-            alert("File không được để trống.");
-        }
-        
-    });
-    $(document).on("submit", ".e_form_submit", function (e) {
+    $(document).on("click", "#btn-sbm", function (e) {
         e.preventDefault();
-        var obj = $(this);
-        $('#Iswait').show();
-        $('#wait').show();
-        obj.ajaxSubmit({
-            type: "POST",
-            dataType: 'json',
-            async: false,
-            success: function (result) {
-                if (result) {
-//                    $('#Iswait').hide();
-//                    $('#wait').hide();
-                }
-            }, error: function () {
-
-            }, complete: function () {
-
-            }
-        });
+        var file_upload = $('#isfile').val();
+        if (file_upload == "") {
+            alert("File không được để trống.");
+            return false;
+        } else {
+            var obj = $('.e_form_submit');
+            ajax_data(obj);
+        }
     });
-
-    /* Xử lý code video */
-//    $('.date').on('change', function () {
-//        var a = $(this).attr('value', $('.date').val());
-//        alert(a);
-//    });
-//    $("#datepicker-' . $i . '").blur(function () {
-//        var val = $(this).val();
-//        $("#code' . $i . '").text(val);
-//    });
 
 });
+
+
+function ajax_data(obj) {
+    $('#Iswait').show();
+    $('#wait').show();
+    var url = obj.attr("action");
+    obj.ajaxSubmit({
+        type: "POST",
+        url: url,
+        dataType: 'json',
+        async: false,
+        success: function (result) {
+            if (result) {
+//                    $('#Iswait').hide();
+//                    $('#wait').hide();
+            }
+        }, error: function () {
+
+        }, complete: function () {
+
+        }
+    });
+}
+
 
 function get_select_time(count_file) {
     var url = $('#url').attr('data-url');
@@ -75,7 +70,6 @@ function get_select_time(count_file) {
         if (result.status == true) {
             $('tbody').html(result.data);
             $('.call_datepicker').html(result.js);
-
         }
     };
     var dataType = 'json';
@@ -84,3 +78,34 @@ function get_select_time(count_file) {
 
 
 
+//    $(document).on("submit", ".e_form_submit", function (e) {
+//        e.preventDefault();
+//        var obj = $(this);
+//        $('#Iswait').show();
+//        $('#wait').show();
+//        obj.ajaxSubmit({
+//            type: "POST",
+//            dataType: 'json',
+//            async: false,
+//            success: function (result) {
+//                if (result) {
+////                    $('#Iswait').hide();
+////                    $('#wait').hide();
+//                }
+//            }, error: function () {
+//
+//            }, complete: function () {
+//
+//            }
+//        });
+//    });
+
+    /* Xử lý code video */
+//    $('.date').on('change', function () {
+//        var a = $(this).attr('value', $('.date').val());
+//        alert(a);
+//    });
+//    $("#datepicker-' . $i . '").blur(function () {
+//        var val = $(this).val();
+//        $("#code' . $i . '").text(val);
+//    });
