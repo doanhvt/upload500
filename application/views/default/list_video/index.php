@@ -113,6 +113,7 @@
                 </thead>
                 <tbody id='table_id'>
                     <?php
+                    if($list_video){                       
                     $count = 1;
                     foreach ($list_video as $item) {
                         ?>
@@ -163,6 +164,9 @@
                         </tr>
                         <?php
                         $count++;
+                        }
+                    }else{
+                        echo "<tr><td>Không tìm thấy kết quả !</td></tr>";
                     }
                     ?>
                 </tbody>

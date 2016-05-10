@@ -67,7 +67,7 @@
             </li>
 
             <li class="">
-                <a href="jqgrid.html">
+                <a href="<?php echo site_url('list_user'); ?>">
                     <i class="menu-icon fa fa-caret-right"></i>
                     Danh sách tài khoản
                 </a>

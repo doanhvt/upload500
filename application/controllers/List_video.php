@@ -66,9 +66,11 @@ class List_video extends MY_Controller {
         $description = NULL;
         $this->master_page($content, $header_page, $title, $description);
     }
-    public function view_video(){
+
+    public function view_video() {
         echo 'view';
     }
+
     public function normal_search() {
 //        $data['user_info'] = $user_info = $this->m_user->get_one_user(1);
 //        $data['list_class'] = $list_class = $this->m_list_video->get_list_class();
@@ -128,7 +130,7 @@ class List_video extends MY_Controller {
 
                     $html .= "<td>";
                     $html .= "<div class='hidden-sm hidden-xs action-buttons'>
-                    <a class='blue' href='".site_url('list_video/view_video')."'>
+                    <a class='blue' href='" . site_url('list_video/view_video') . "'>
                         <i class='ace-icon fa fa-search-plus bigger-130'></i>
                     </a>
 
@@ -140,66 +142,65 @@ class List_video extends MY_Controller {
                         <i class='ace-icon fa fa-trash-o bigger-130'></i>
                     </a>
                 </div>";
-                $html .= "</td>";
-                $count++;
+                    $html .= "</td>";
+                    $count++;
+                }
+                $data_view['html'] = $html;
+                $content = $this->load->view($this->path_theme_view . "normal-search/index", $data_view, true);
+                $header_page = $this->load->view($this->path_theme_view . "normal-search/header", $data_view, true);
+                $title = NULL;
+                $description = NULL;
+                $this->master_page($content, $header_page, $title, $description);
+            } else {
+                $data_view['user_info'] = $user_info = $this->m_user->get_one_user(1);
+                $data_view['list_class'] = $list_class = $this->m_list_video->get_list_class();
+                $data_view['list_time'] = $list_time = $this->m_list_video->get_list_time();
+                $data_view['search_session'] = '';
+                $content = $this->load->view($this->path_theme_view . "normal-search/index", $data_view, true);
+                $header_page = $this->load->view($this->path_theme_view . "normal-search/header", $data_view, true);
+                $title = NULL;
+                $description = NULL;
+                $this->master_page($content, $header_page, $title, $description);
             }
-            $data_view['html'] = $html;
-            $content = $this->load->view($this->path_theme_view . "normal-search/index", $data_view, true);
-            $header_page = $this->load->view($this->path_theme_view . "normal-search/header", $data_view, true);
-            $title = NULL;
-            $description = NULL;
-            $this->master_page($content, $header_page, $title, $description);
         } else {
             $data_view['user_info'] = $user_info = $this->m_user->get_one_user(1);
             $data_view['list_class'] = $list_class = $this->m_list_video->get_list_class();
             $data_view['list_time'] = $list_time = $this->m_list_video->get_list_time();
-            $data_view['search_session'] = '';
-            $content = $this->load->view($this->path_theme_view . "normal-search/index", $data_view, true);
-            $header_page = $this->load->view($this->path_theme_view . "normal-search/header", $data_view, true);
-            $title = NULL;
-            $description = NULL;
-            $this->master_page($content, $header_page, $title, $description);
-        }
-    }
-    else {
-        $data_view['user_info'] =$user_info= $this->m_user->get_one_user(1);
-        $data_view['list_class']= $list_class = $this->m_list_video->get_list_class();
-        $data_view['list_time'] =$list_time= $this->m_list_video->get_list_time();
-        $data_view['search_session'] = $search_session = $this->session->userdata('normal-search');
-        $data = $this->m_list_video->get_list_normal_search($search_session);
-        $config["total_rows"] = count($data);
-        $this->pagination->initialize($config);
-        $data_view["data_search"] = $data_search = $this->m_list_video->normal_search($config["per_page"], $page, $search_session);
-        $data_view["links"] = $links = $this->pagination->create_links();
-        /* End pagination */
-        $html = "";
-        $count = 1;
-        if ($data_search) {
-            foreach ($data_search as $data_search_item) {
-                $html .= "<tr>";
-                $html .= "<td>" . $count . "</td>";
-                $html .= "<td>" . $data_search_item->time_upload . "</td>";
-                $html .= "<td>" . $data_search_item->class_date . "</td>";
-                foreach ($list_time as $time_check) {
-                    if ($data_search_item->time_id == $time_check->id) {
-                        $html.= "<td>" . $time_check->start . " - " . $time_check->end . "</td>";
+            $data_view['search_session'] = $search_session = $this->session->userdata('normal-search');
+            $data = $this->m_list_video->get_list_normal_search($search_session);
+            $config["total_rows"] = count($data);
+            $this->pagination->initialize($config);
+            $data_view["data_search"] = $data_search = $this->m_list_video->normal_search($config["per_page"], $page, $search_session);
+            $data_view["links"] = $links = $this->pagination->create_links();
+            /* End pagination */
+            $html = "";
+            $count = 1;
+            if ($data_search) {
+                foreach ($data_search as $data_search_item) {
+                    $html .= "<tr>";
+                    $html .= "<td>" . $count . "</td>";
+                    $html .= "<td>" . $data_search_item->time_upload . "</td>";
+                    $html .= "<td>" . $data_search_item->class_date . "</td>";
+                    foreach ($list_time as $time_check) {
+                        if ($data_search_item->time_id == $time_check->id) {
+                            $html.= "<td>" . $time_check->start . " - " . $time_check->end . "</td>";
+                        }
                     }
-                }
-                foreach ($list_class as $class_check) {
-                    if ($data_search_item->class_id == $class_check->id) {
-                        $html.= "<td>" . $class_check->name . "</td>";
+                    foreach ($list_class as $class_check) {
+                        if ($data_search_item->class_id == $class_check->id) {
+                            $html.= "<td>" . $class_check->name . "</td>";
+                        }
                     }
-                }
-                $html .= "<td>" . $user_info->display_name . "</td>";
-                $html .= "<td>" . $data_search_item->assistant . "</td>";
-                $html .= "<td>" . $data_search_item->cameramen . "</td>";
-                $html .= "<td>" . $data_search_item->status_video . "</td>";
-                $html .= "<td>" . $data_search_item->note . "</td>";
-                $html .= "<td>" . $data_search_item->video_code . "</td>";
-                $html .= "<td>" . $user_info->email . "</td>";
-                $html .= "<td>";
-                $html .= "<div class='hidden-sm hidden-xs action-buttons'>
-                <a class='blue' href='".site_url('list_video/view_video')."'>
+                    $html .= "<td>" . $user_info->display_name . "</td>";
+                    $html .= "<td>" . $data_search_item->assistant . "</td>";
+                    $html .= "<td>" . $data_search_item->cameramen . "</td>";
+                    $html .= "<td>" . $data_search_item->status_video . "</td>";
+                    $html .= "<td>" . $data_search_item->note . "</td>";
+                    $html .= "<td>" . $data_search_item->video_code . "</td>";
+                    $html .= "<td>" . $user_info->email . "</td>";
+                    $html .= "<td>";
+                    $html .= "<div class='hidden-sm hidden-xs action-buttons'>
+                <a class='blue' href='" . site_url('list_video/view_video') . "'>
                     <i class='ace-icon fa fa-search-plus bigger-130'></i>
                 </a>
                 <a class='green' href='#'>
@@ -209,17 +210,17 @@ class List_video extends MY_Controller {
                     <i class='ace-icon fa fa-trash-o bigger-130'></i>
                 </a>
             </div>";
-            $html .= "</td>";
-            $count++;
+                    $html .= "</td>";
+                    $count++;
+                }
+                $data_view['html'] = $html;
+                $content = $this->load->view($this->path_theme_view . "normal-search/index", $data_view, true);
+                $header_page = $this->load->view($this->path_theme_view . "normal-search/header", $data_view, true);
+                $title = NULL;
+                $description = NULL;
+                $this->master_page($content, $header_page, $title, $description);
+            }
         }
-        $data_view['html'] = $html;
-        $content = $this->load->view($this->path_theme_view . "normal-search/index", $data_view, true);
-        $header_page = $this->load->view($this->path_theme_view . "normal-search/header", $data_view, true);
-        $title = NULL;
-        $description = NULL;
-        $this->master_page($content, $header_page, $title, $description);
     }
-}
-}
 
 }
