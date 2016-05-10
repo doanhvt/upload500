@@ -54,6 +54,7 @@ class M_list_video extends CI_Model {
         $this->db->select('vc.*');
         $this->db->from('video_copy as vc');
         $this->db->join('user as u','vc.user_id = u.id');
+        $this->db->where('u.active',1);
         $this->db->like('u.display_name', $value);
         $this->db->or_like('vc.assistant', $value); 
         $this->db->or_like('u.email', $value); 
@@ -68,6 +69,7 @@ class M_list_video extends CI_Model {
         $this->db->select('vc.*');
         $this->db->from('video_copy as vc');
         $this->db->join('user as u','vc.user_id = u.id');
+        $this->db->where('u.active',1);
         $this->db->like('u.display_name', $value);
         $this->db->or_like('vc.assistant', $value); 
         $this->db->or_like('u.email', $value); 

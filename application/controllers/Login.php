@@ -12,9 +12,9 @@ class Login extends MY_Controller {
 	}
 
 	public function index() {
-		if($this->session->userdata('is_login') == true){
-			redirect('');
-		}
+		// if($this->session->userdata('is_login') == true){
+		// 	redirect('');
+		// }
 		
 		$data = Array();
 		$code = $this->input->get('code');
@@ -32,7 +32,7 @@ class Login extends MY_Controller {
 						if($return){
 							$json_data = json_encode($return);
 							$this->session->set_userdata('user_profile', $json_data);
-							$this->session->set_userdata('is_login', true);	
+							// $this->session->set_userdata('is_login', true);	
 							redirect('');	
 						}else{
 							$this->session->sess_destroy();
@@ -59,7 +59,12 @@ class Login extends MY_Controller {
 //        $contents['user_profile'] = $this->session->userdata('user_profile');
 //        $this->load->view('profile', $contents);
 //    }
-
+	protected function require_login() {
+		return false;
+	}
+	protected function check_permission() {
+		return true;
+	}
 	public function logout() {
 		$this->session->sess_destroy();
 		$this->googleplus->revokeToken();

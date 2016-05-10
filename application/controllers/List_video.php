@@ -9,7 +9,33 @@ class List_video extends MY_Controller {
     }
 
     public function index() {
-        $this->page();
+        // $this->page();
+        $data = Array();
+        $data['user_info'] = $this->m_user->get_one_user(1);
+        $data['list_class'] = $this->m_list_video->get_list_class();
+        $data['list_time'] = $this->m_list_video->get_list_time();
+        /* Pagination */
+        $config = array();
+        $config["base_url"] = base_url("list_video/index");
+        $config["total_rows"] = count($this->m_list_video->get_list_video());
+        $config["per_page"] = 2;
+        $config["uri_segment"] = 3;
+        $config['num_tag_open'] = '<div style="text-align: center;background-color:#810c15;width:30px;height:30px;display:inline-block;color:white;margin:1px;border-radius:3px 3px 3px 3px;border:1px solid #EEEEEE">';
+        $config['num_tag_close'] = '</div>';
+        $config['cur_tag_open'] = '<div style="text-align: center;background-color:#810c15;width:30px;height:30px;display:inline-block;color:white;margin:1px;border-radius:3px 3px 3px 3px;border:1px solid #EEEEEE">';
+        $config['cur_tag_close'] = '</div>';
+        $config['prev_link'] = FALSE;
+        $config['next_link'] = FALSE;
+        $this->pagination->initialize($config);
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        $data["list_video"] = $this->m_list_video->fetch_data($config["per_page"], $page);
+        $data["links"] = $this->pagination->create_links();
+        /* End pagination */
+        $content = $this->load->view($this->path_theme_view . "list_video/index", $data, true);
+        $header_page = $this->load->view($this->path_theme_view . "list_video/header", $data, true);
+        $title = NULL;
+        $description = NULL;
+        $this->master_page($content, $header_page, $title, $description);
     }
 
     public function page() {
@@ -39,6 +65,10 @@ class List_video extends MY_Controller {
         $title = NULL;
         $description = NULL;
         $this->master_page($content, $header_page, $title, $description);
+    }
+
+    public function view_video() {
+        echo 'view';
     }
 
     public function normal_search() {
@@ -100,18 +130,18 @@ class List_video extends MY_Controller {
 
                     $html .= "<td>";
                     $html .= "<div class='hidden-sm hidden-xs action-buttons'>
-                                    <a class='blue' href='#'>
-                                        <i class='ace-icon fa fa-search-plus bigger-130'></i>
-                                    </a>
+                    <a class='blue' href='" . site_url('list_video/view_video') . "'>
+                        <i class='ace-icon fa fa-search-plus bigger-130'></i>
+                    </a>
 
-                                    <a class='green' href='#'>
-                                        <i class='ace-icon fa fa-pencil bigger-130'></i>
-                                    </a>
+                    <a class='green' href='#'>
+                        <i class='ace-icon fa fa-pencil bigger-130'></i>
+                    </a>
 
-                                    <a class='red' href='#'>
-                                        <i class='ace-icon fa fa-trash-o bigger-130'></i>
-                                    </a>
-                                </div>";
+                    <a class='red' href='#'>
+                        <i class='ace-icon fa fa-trash-o bigger-130'></i>
+                    </a>
+                </div>";
                     $html .= "</td>";
                     $count++;
                 }
@@ -132,11 +162,10 @@ class List_video extends MY_Controller {
                 $description = NULL;
                 $this->master_page($content, $header_page, $title, $description);
             }
-        }
-        else {
-            $data_view['user_info'] =$user_info= $this->m_user->get_one_user(1);
-            $data_view['list_class']= $list_class = $this->m_list_video->get_list_class();
-            $data_view['list_time'] =$list_time= $this->m_list_video->get_list_time();
+        } else {
+            $data_view['user_info'] = $user_info = $this->m_user->get_one_user(1);
+            $data_view['list_class'] = $list_class = $this->m_list_video->get_list_class();
+            $data_view['list_time'] = $list_time = $this->m_list_video->get_list_time();
             $data_view['search_session'] = $search_session = $this->session->userdata('normal-search');
             $data = $this->m_list_video->get_list_normal_search($search_session);
             $config["total_rows"] = count($data);
@@ -171,16 +200,16 @@ class List_video extends MY_Controller {
                     $html .= "<td>" . $user_info->email . "</td>";
                     $html .= "<td>";
                     $html .= "<div class='hidden-sm hidden-xs action-buttons'>
-                                <a class='blue' href='#'>
-                                    <i class='ace-icon fa fa-search-plus bigger-130'></i>
-                                </a>
-                                <a class='green' href='#'>
-                                    <i class='ace-icon fa fa-pencil bigger-130'></i>
-                                </a>
-                                <a class='red' href='#'>
-                                    <i class='ace-icon fa fa-trash-o bigger-130'></i>
-                                </a>
-                            </div>";
+                <a class='blue' href='" . site_url('list_video/view_video') . "'>
+                    <i class='ace-icon fa fa-search-plus bigger-130'></i>
+                </a>
+                <a class='green' href='#'>
+                    <i class='ace-icon fa fa-pencil bigger-130'></i>
+                </a>
+                <a class='red' href='#'>
+                    <i class='ace-icon fa fa-trash-o bigger-130'></i>
+                </a>
+            </div>";
                     $html .= "</td>";
                     $count++;
                 }

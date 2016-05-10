@@ -113,6 +113,7 @@
                 </thead>
                 <tbody id='table_id'>
                     <?php
+                    if($list_video){                       
                     $count = 1;
                     foreach ($list_video as $item) {
                         ?>
@@ -147,7 +148,7 @@
                             <td><?php echo $user_info->email; ?></td>
                             <td>
                                 <div class="hidden-sm hidden-xs action-buttons">
-                                    <a class="blue" href="#">
+                                    <a class="blue" href="<?php echo site_url('list_video/view_video'); ?>">
                                         <i class="ace-icon fa fa-search-plus bigger-130"></i>
                                     </a>
 
@@ -163,6 +164,9 @@
                         </tr>
                         <?php
                         $count++;
+                        }
+                    }else{
+                        echo "<tr><td>Không tìm thấy kết quả !</td></tr>";
                     }
                     ?>
                 </tbody>

@@ -37,3 +37,16 @@ git config --global user.email "doanhvt92@gmail.com"
 git config --global user.name "doanhvt"
 git pull origin doanhvt
 git push origin master
+git rm -r --cached .
+git add .
+git commit -m "fixed untracked files"
+git status
+git push origin master 
+git fetch origin
+git merge origin/tungnd
+git status
+git push origin master
+git status
+git fetch origin
+git merge origin/tungnd
+git push origin master

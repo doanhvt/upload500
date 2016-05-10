@@ -18,24 +18,26 @@ class MY_Controller extends CI_Controller {
         parent::__construct();
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $this->_setting_config();
-//        if ($this->require_login()) {
-//            if (!$this->session->userdata('id')) {
-//                redirect(site_url('admin/login'));
-//            }
-//        }
-//        if (!$this->check_permission()) {
-//            echo "<h3 style='text-align:center;color:red;'>Bạn không có quyền truy cập chức năng này !</h3>";
-//            echo "<p style='text-align:center'><a href=" . site_url('admin/home') . ">Home</a></p>";
-//            exit;
-//        }
+       if ($this->require_login()) {
+            if (!$this->session->userdata('user_profile')) {
+                redirect(site_url('login'));
+            }
+        }
+        if (!$this->check_permission()) {
+            echo "<h3 style='text-align:center;color:red;'>Bạn không có quyền truy cập chức năng này !</h3>";
+            echo "<p style='text-align:center'><a href=" . site_url('home') . ">Home</a></p>";
+            exit;
+        }
     }
 
     protected function check_permission() {
-        $this->load->module('permission');
-        if ($this->session->userdata('permission')) {
-            $list_permission = $this->permission->get_user_permissions($this->session->userdata('permission'));
-            $class = $this->router->fetch_class();
-            if (in_array($class, $list_permission) || ($class == 'home')) {
+        $this->load->model('m_user');
+        $user_info = json_decode($this->session->userdata('user_profile'));
+        $role_id = $user_info[0]->role_id;     
+        if ($role_id) {
+            $list_permission = $this->m_user->get_user_permissions($role_id);
+            $method = $this->router->fetch_method();
+            if (in_array($method, $list_permission) || ($method == 'index') || in_array('*', $list_permission)) {
                 return TRUE;
             } else {
                 return FALSE;
