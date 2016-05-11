@@ -7,9 +7,9 @@ $(document).ready(function () {
             dataType: 'json',
             data: null,
             success: function (data) {
-                $('.modal-body-edit').html(data.modal_body)
-            }
-        })
+                $('.modal-body-edit').html(data.modal_body);
+           }
+       })
     });
     $(".delete_info").click(function () {
         if (confirm("Are you sure you want to delete this?")) {
@@ -22,6 +22,9 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data.status == 1) {
                         alert(data.mesage)
+                        location.reload();
+                    }else{
+                        alert(data.message)
                         location.reload();
                     }
                 }
@@ -41,7 +44,10 @@ $(document).ready(function () {
             data: obj,
             success: function (data) {
                 if (data.status == 1) {
-                    alert(data.mesage)
+                    alert(data.message)
+                    location.reload();
+                }else{
+                    alert(data.message);
                     location.reload();
                 }
             }
@@ -57,11 +63,14 @@ $(document).ready(function () {
             data: obj,
             success: function (data) {
                 if (data.status == 1) {
-                    alert(data.mesage)
+                    alert(data.message);
                     location.reload();
+                }else if(data.status == 2){
+                    alert(data.message);
                 }
                 else {
-                    alert(data.mesage)
+                    alert(data.message);
+                    location.reload();
                 }
             }
         })

@@ -50,3 +50,17 @@ git status
 git fetch origin
 git merge origin/tungnd
 git push origin master
+git status
+git commit -am "login va phan quyen"
+git push origin master
+git fetch origin
+git merge origin/tungnd
+git push origin master
+git status
+git fetch origin
+git merge origin/doanhvt
+git push origin master
+git status
+git fetch origin
+git merge origin/doanhvt
+git push origin master
