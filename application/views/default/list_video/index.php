@@ -88,6 +88,31 @@
         <div class="table-header" style="background-color: #810c15;">
             Results
         </div>
+        <!-- Trigger the modal with a button -->
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center">Video</h4>
+                    </div>
+                    <div class="modal-body">
+                        <video id="view-video" width="100%" height="100%" controls>
+                            <source src="Rihanna - Diamonds.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         <!-- div.table-responsive -->
 
@@ -113,59 +138,61 @@
                 </thead>
                 <tbody id='table_id'>
                     <?php
-                    if($list_video){                       
-                    $count = 1;
-                    foreach ($list_video as $item) {
-                        ?>
-                        <tr>
-                            <td><?php echo $count; ?></td>
-                            <td><?php echo $item->time_upload; ?></td>
-                            <td><?php echo $item->class_date; ?></td>
-                            <td>
-                                <?php
-                                foreach ($list_time as $time_check) {
-                                    if ($item->time_id == $time_check->id) {
-                                        echo $time_check->start . ' - ' . $time_check->end;
+                    if ($list_video) {
+                        $count = 1;
+                        foreach ($list_video as $item) {
+                            ?>
+                            <tr>
+                                <td><?php echo $count; ?></td>
+                                <td><?php echo $item->time_upload; ?></td>
+                                <td><?php echo $item->class_date; ?></td>
+                                <td>
+                                    <?php
+                                    foreach ($list_time as $time_check) {
+                                        if ($item->time_id == $time_check->id) {
+                                            echo $time_check->start . ' - ' . $time_check->end;
+                                        }
                                     }
-                                }
-                                ?>
-                            </td>
-                            <td>
-                                <?php
-                                foreach ($list_class as $class_check) {
-                                    if ($item->class_id == $class_check->id) {
-                                        echo $class_check->name;
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php
+                                    foreach ($list_class as $class_check) {
+                                        if ($item->class_id == $class_check->id) {
+                                            echo $class_check->name;
+                                        }
                                     }
-                                }
-                                ?>
-                            </td>
-                            <td><?php echo $user_info->display_name; ?></td>
-                            <td><?php echo $item->assistant; ?></td>
-                            <td><?php echo $item->cameramen; ?></td>
-                            <td><?php echo $item->status_video; ?></td>
-                            <td><?php echo $item->note; ?></td>
-                            <td><?php echo $item->video_code; ?></td>
-                            <td><?php echo $user_info->email; ?></td>
-                            <td>
-                                <div class="hidden-sm hidden-xs action-buttons">
-                                    <a class="blue" href="<?php echo site_url('list_video/view_video'); ?>">
-                                        <i class="ace-icon fa fa-search-plus bigger-130"></i>
-                                    </a>
+                                    ?>
+                                </td>
+                                <td><?php echo $user_info->display_name; ?></td>
+                                <td><?php echo $item->assistant; ?></td>
+                                <td><?php echo $item->cameramen; ?></td>
+                                <td><?php echo $item->status_video; ?></td>
+                                <td><?php echo $item->note; ?></td>
+                                <td><?php echo $item->video_code; ?></td>
+                                <td><?php echo $user_info->email; ?></td>
+                                <td>
+                                    <div class="hidden-sm hidden-xs action-buttons">
+                                        <button link_video="<?php echo base_url('uploads/'.$item->link_video); ?>" class="blue btn-view" data-toggle="modal" data-target="#myModal">
+                                            <i class="ace-icon fa fa-eye bigger-130"></i>
+                                        </button>
 
-                                    <a class="green" href="#">
-                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                    </a>
+                                        <button class="green">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                        </button>
 
-                                    <a class="red" href="#">
-                                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        <?php
-                        $count++;
+                                        <button class="red">
+                                            <a href="<?php echo site_url('list_video/download_video/'.$item->id); ?>"> 
+                                                <i class="ace-icon fa fa-download bigger-130"></i>
+                                            <a/>             
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php
+                            $count++;
                         }
-                    }else{
+                    } else {
                         echo "<tr><td>Không tìm thấy kết quả !</td></tr>";
                     }
                     ?>

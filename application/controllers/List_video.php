@@ -38,6 +38,21 @@ class List_video extends MY_Controller {
         $this->master_page($content, $header_page, $title, $description);
     }
 
+    public function download_video($id) {
+        $video = $this->m_list_video->get_one_video($id);
+        if ($video) {
+            //Get the file from whatever the user uploaded (NOTE: Users needs to upload first), @See http://localhost/CI/index.php/upload
+            $data = file_get_contents(base_url('uploads/'.$video->link_video));
+            //Read the file's contents
+            $name = $video->link_video;
+
+            //use this function to force the session/browser to download the file uploaded by the user 
+            force_download($name, $data);
+        }else{
+            echo "Video không tồn tại !";
+        }
+    }
+
     public function page() {
         $data = Array();
         $data['user_info'] = $this->m_user->get_one_user(1);
@@ -65,10 +80,6 @@ class List_video extends MY_Controller {
         $title = NULL;
         $description = NULL;
         $this->master_page($content, $header_page, $title, $description);
-    }
-
-    public function view_video() {
-        echo 'view';
     }
 
     public function normal_search() {

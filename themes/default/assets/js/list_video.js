@@ -4,7 +4,18 @@ $(document).ready(function () {
     $("#advanced-search").click(function () {
         $("#advanced-search-box").toggle('5000', 'linear');
     });
-
+    $('.btn-view').click(function () {
+        var link_video = $(this).attr('link_video');
+        var video = document.getElementById('view-video');
+        var sources = video.getElementsByTagName('source');
+        sources[0].src = link_video;
+        video.load();
+        video.play();
+    });
+    $('#myModal').on('hidden.bs.modal', function () {
+        var v = document.getElementById('view-video');
+        v.pause();
+    })
 //    $(document).on('click', '#normal-search-btn', function (e) {
 //        e.preventDefault();
 //        var url = $('#normal-search-form').attr('url');
