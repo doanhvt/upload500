@@ -24,10 +24,9 @@ class MY_Controller extends CI_Controller {
             }
         }
         if (!$this->check_permission()) {
-            $no_permission = "<script type='text/javascript'>";
-            $no_permission .= "alert('ok);return;";
-            $no_permission .= "</script>";
-            echo $no_permission;
+            echo "<h3 style='text-align:center;color:red;'>Bạn không có quyền truy cập chức năng này !</h3>";
+            echo "<p style='text-align:center'><a href=" . site_url('home') . ">Home</a></p>";
+            exit;
         }
     }
 
