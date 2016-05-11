@@ -74,7 +74,7 @@ class List_user extends MY_Controller {
         $this->m_user->edit_user($id, $data_update);
         $data_return = array(
             'status' => 1,
-            'mesage' => 'Sửa bản ghi thành công !'
+            'message' => 'Sửa bản ghi thành công !'
         );
         echo json_encode($data_return);
     }
@@ -85,13 +85,13 @@ class List_user extends MY_Controller {
             $this->m_user->add_user($data_insert);
             $data_return = array(
                 'status' => 1,
-                'mesage' => 'Thêm tài khoản thành công !'
+                'message' => 'Thêm tài khoản thành công !'
             );
             echo json_encode($data_return);
         } else {
             $data_return = array(
-                'status' => 0,
-                'mesage' => 'Email đã tồn tại vui lòng chọn email khác !'
+                'status' => 2,
+                'message' => 'Email đã tồn tại vui lòng chọn email khác !'
             );
             echo json_encode($data_return);
         }
