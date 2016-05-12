@@ -34,6 +34,12 @@ $(document).ready(function () {
             ajax_data(obj);
         }
     });
+    
+    $(document).on("click", "#close", function (e) {
+        e.preventDefault();
+        $('#Iswait').hide();
+        $('#wait').hide();
+    });
 
 });
 
@@ -48,9 +54,15 @@ function ajax_data(obj) {
         dataType: 'json',
         async: false,
         success: function (result) {
-            if (result) {
-//                    $('#Iswait').hide();
-//                    $('#wait').hide();
+            if (result.error) {
+                $('#myModal').modal({
+                    show: 'false',
+                });
+                var temp = "";
+                var array = $.map(result.error, function (value, index) {
+                    temp += value;
+                });
+                $('.modal-body').html(temp);
             }
         }, error: function () {
 
@@ -100,7 +112,7 @@ function get_select_time(count_file) {
 //        });
 //    });
 
-    /* Xử lý code video */
+/* Xử lý code video */
 //    $('.date').on('change', function () {
 //        var a = $(this).attr('value', $('.date').val());
 //        alert(a);
