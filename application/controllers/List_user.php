@@ -11,6 +11,7 @@ class List_user extends MY_Controller {
         $data = Array();
         /* Pagination */
         $config = array();
+        $data['list_account_type'] = $this->m_user->get_list_account();
         $data['list_role'] = $this->m_user->get_list_permission();
         $config["base_url"] = base_url("list_user/index");
         $config["total_rows"] = count($this->m_user->get_list_user());
@@ -38,6 +39,7 @@ class List_user extends MY_Controller {
     public function get_ajax_data_edit_user($id) {
         $user_info = $this->m_user->get_one_user($id);
         $list_role = $this->m_user->get_list_permission();
+        $list_account_type = $this->m_user->get_list_account();
         $modal_body = "";
         $modal_body .= "<form id='edit_form' action='" . site_url('list_user/edit_user/' . $id) . "' method='post' role='form'>";
         $modal_body .= "<div class='form-group'>";
@@ -58,6 +60,16 @@ class List_user extends MY_Controller {
             }
         }
         $modal_body .="</select><br><br>";
+        $modal_body .= "<label for='role'><b>Loại tài khoản:</b></label><br>";
+        $modal_body .= "<select name='account_type'>";
+        foreach ($list_account_type as $list_account_type_item) {
+            if ($user_info->account_type == $list_account_type_item->id) {
+                $modal_body .= "<option selected='selected' value='" . $list_account_type_item->id . "'>" . $list_account_type_item->name . "</option>";
+            } else {
+                $modal_body .= "<option value='" . $list_account_type_item->id . "'>" . $list_account_type_item->name . "</option>";
+            }
+        }
+        $modal_body .="</select><br><br>";
         $modal_body .="</form>";
         $data_return = array(
             'modal_body' => $modal_body
@@ -69,7 +81,8 @@ class List_user extends MY_Controller {
         $data_update = array(
             'email' => $this->input->post('email'),
             'display_name' => $this->input->post('display_name'),
-            'role_id' => $this->input->post('role')
+            'role_id' => $this->input->post('role'),
+            'account_type' => $this->input->post('account_type')
         );
         $this->m_user->edit_user($id, $data_update);
         $data_return = array(
@@ -107,6 +120,7 @@ class List_user extends MY_Controller {
     }
 
     public function user_search() {
+        $data_view['list_account_type'] = $this->m_user->get_list_account();
         $data_view['list_role'] = $this->m_user->get_list_permission();
         $config = array();
         $config["base_url"] = base_url("list_user/user_search");
