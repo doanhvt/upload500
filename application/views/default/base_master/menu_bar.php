@@ -17,12 +17,16 @@
             </small>
         </a>
     </div>
-
+	
     <div class="navbar-buttons navbar-header pull-right" role="navigation">
         <ul class="nav ace-nav">
             <li class="light-blue">
                 <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                    <img class="nav-user-photo" src="<?php echo $this->path_theme_file; ?>assets/avatars/user.jpg" alt="Jason's Photo" />
+                    <!-- <img class="nav-user-photo" src="<?php echo $this->path_theme_file; ?>assets/avatars/user.jpg" alt="Jason's Photo" /> -->
+                    <?php
+                        $picture = $this->session->userdata('user_picture');
+                    ?>
+                    <img class="nav-user-photo" src="<?php echo isset($picture) ? $picture : "";?>" alt="Jason's Photo" />
                     <?php $infoUser = json_decode($this->session->userdata('user_profile'));
                         if($infoUser){ ?>
                     <span class="user-info" style="    top: 15px;">
