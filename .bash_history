@@ -83,3 +83,9 @@ git push origin master
 git status
 git commit -am "sua link video"
 git push origin master
+git status
+git fetch origin
+git merge origin/tungnd
+git status
+git commit -am "fix conflict"
+git push origin master
