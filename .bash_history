@@ -80,3 +80,6 @@ git fetch origin
 git merge/tungnd
 git merge origin/tungnd
 git push origin master
+git status
+git commit -am "sua link video"
+git push origin master
