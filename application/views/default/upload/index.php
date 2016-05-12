@@ -193,7 +193,7 @@
     font-weight: bold;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="background: #810c14;color: #FFF;">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" id="close">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Error</h4>
             </div>
@@ -202,6 +202,30 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg hidden" data-toggle="modal" data-target="#myModal_1"></button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 14px;
+    color: #810c15;
+    font-weight: bold;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #810c14;color: #FFF;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #FFF;"><span aria-hidden="true" id="close">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                <p id="success_true" style="font-size: 17px;"></p>
+                <p id="success_false" style="font-size: 17px;"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.reload();">Close</button>
             </div>
         </div>
     </div>
