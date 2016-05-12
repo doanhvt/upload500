@@ -23,7 +23,7 @@ $(document).ready(function () {
     });
 
     /* ajax xử lý upload */
-    $(document).on("click", "#btn-sbm", function (e) {
+    $(document).on("submit", ".e_form_submit", function (e) {
         e.preventDefault();
         var file_upload = $('#isfile').val();
         if (file_upload == "") {
@@ -32,7 +32,10 @@ $(document).ready(function () {
         } else {
             $('#btn-sbm').attr('disabled', 'disabled');
             var obj = $('.e_form_submit');
+            $('#Iswait').show();
+            $('#wait').show();
             ajax_data(obj);
+            return;
         }
     });
 
@@ -46,14 +49,12 @@ $(document).ready(function () {
 
 
 function ajax_data(obj) {
-    $('#Iswait').show();
-    $('#wait').show();
     var url = obj.attr("action");
     obj.ajaxSubmit({
         type: "POST",
         url: url,
         dataType: 'json',
-        async: false,
+//        async: false,
         success: function (result) {
             if (result.error) {
                 $('#myModal').modal({
@@ -64,6 +65,7 @@ function ajax_data(obj) {
                     temp += value;
                 });
                 $('.modal-body').html(temp);
+                $('#btn-sbm').removeAttr('disabled');
             }
             var sucess = [];
             var error = [];
@@ -73,8 +75,6 @@ function ajax_data(obj) {
                         $('#success_' + idx).html("<i class='ace-icon glyphicon glyphicon-ok'></i>");
                         sucess.push(idx);
                     });
-                    $('#Iswait').hide();
-                    $('#wait').hide();
                     $('#myModal_1').modal({
                         show: 'false',
                     });
@@ -84,25 +84,32 @@ function ajax_data(obj) {
                         $('#error_' + idx).html("<i class='ace-icon glyphicon glyphicon-remove'></i>");
                         error.push(idx);
                     });
-                    $('#Iswait').hide();
-                    $('#wait').hide();
+                    $('#myModal_1').modal({
+                        show: 'false',
+                    });
+
                 }
             });
-            if(sucess.length != 0){
+            if (sucess.length !== 0) {
                 var number_video_success = 'Số video upload thành công ' + sucess.length;
                 $('#success_true').html(number_video_success);
+                return;
             }
-            if(error.length != 0){
-                var number_video_error = 'Số video upload thành công ' + error.length;
+            if (error.length !== 0) {
+                var number_video_error = 'Số video upload không thành công ' + error.length;
                 $('#success_false').html(number_video_error);
+                return;
             }
-            
+
         }, error: function () {
 
         }, complete: function () {
             $('#btn-sbm').removeAttr('disabled');
+            $('#Iswait').hide();
+            $('#wait').hide();
         }
     });
+    return false;
 }
 
 

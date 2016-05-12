@@ -108,80 +108,84 @@
         </div>  
     </div>
 </div>
-<form action="<?php echo $ajax_link; ?>" method="POST" enctype="multipart/form-data" role="form" class="e_form_submit">
-    <div class="row" style="margin-top: 5%">
-        <div class="col-md-12">
-
-            <div id="url" data-url="<?php echo site_url('upload/check_data'); ?>"></div>
-            <div class="form-group" style="margin: 0px;">
-                <div class="col-md-offset-2 col-md-5" style="padding-right: 0px">
-                    <input type="text" class="form-control" id="isname" placeholder="Select video to upload ..." disabled value="">
-                    <input type="file" name="userfile[]" class="form-control hide" id="isfile" multiple accept="video/*"/>
-                </div>
-                <div class="col-md-2" style="padding-left: 0px;">
-                    <span class="btn btn-default" id="choosfile"> <i class="fa fa-video-camera" aria-hidden="true"></i> Choose file</sapn>
-                </div>
-            </div>
-            <div class="form-group"> 
-                <div class="col-md-3">
-                    <button type="submit" class="btn btn-default" id="btn-sbm">Upload</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
+<div class="row" style="margin-top: 0%;position: relative;">
+    <!--    Wait-->
     <div class="row" style="height: 80px;padding: 10px;">
         <div class="col-md-12">
-            <p class="text-center" id="Iswait" style="display: none;font-weight: bold;">
+            <p class="text-center" id="Iswait" style="font-weight: bold;display: none;">
                 <label class="text-center">Vui lòng đợi</label> <br/>
                 <img style="width: 6%;" src="<?php echo $this->path_theme_file; ?>upload/img/LoaderIcon.gif" alt="" title=""/>
             </p>
         </div>
     </div>
-    <div class="row" style="margin-top: 0%;position: relative;">
-        <div class="col-md-12" id="wait" style="position: absolute;z-index: 999;width: 98%;margin-left: 13px;height: 100%;background-color: rgba(192,192,195,0.5);top:38px;display: none;">
-            <p class="text-center" style="padding-top: 52px;">
-                <img src="<?php echo $this->path_theme_file; ?>upload/img/loading-spiral.gif" alt="" title=""/>
-            </p>
-        </div>
-
-        <div class="col-md-12">
-            <div class="table-header" style="background: #810c15;">
-                Upload Infomation 
-            </div>
-            <div class="content">
-                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>Thông tin video</th>
-                            <th>Ngày học (*)</th>
-                            <th>Giờ học</th>
-                            <th>Loại lớp</th>
-                            <th>Giáo viên</th>
-                            <th>Trợ giảng</th>
-                            <th>Người quay</th>
-                            <th>Tình trạng video</th>
-                            <th>Ghi chú chi tiết</th>
-                            <th>Mã video</th>
-                            <th>Username</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-                <div class="null">
-                    <!--<p class="text-center h5" id="message">Dữ liệu trống ...</p>-->
-                </div>
-                <div class="result">
-
-                </div>
-            </div>
-        </div>
+    
+    <div class="col-md-12" id="wait" style="display: none;position: absolute;z-index: 999;width: 100%;margin-left: 0px;height: 30%;background-color: rgba(192,192,195,0.5);top: 80%;">
+        <p class="text-center" style="padding-top: 52px;">
+            <img src="<?php echo $this->path_theme_file; ?>upload/img/loading-spiral.gif" alt="" title=""/>
+        </p>
     </div>
-</form>
+<!--    End wait-->
+    
+    <form action="<?php echo $ajax_link; ?>" method="POST" enctype="multipart/form-data" role="form" class="e_form_submit">
+        <div class="row" style="margin-top: 5%;margin-bottom: 5%;">
+            <div class="col-md-12">
+                <div id="url" data-url="<?php echo site_url('upload/check_data'); ?>"></div>
+                <div class="form-group" style="margin: 0px;">
+                    <div class="col-md-offset-2 col-md-5" style="padding-right: 0px">
+                        <input type="text" class="form-control" id="isname" placeholder="Select video to upload ..." disabled value="">
+                        <input type="file" name="userfile[]" class="form-control hide" id="isfile" multiple accept="video/*"/>
+                    </div>
+                    <div class="col-md-2" style="padding-left: 0px;">
+                        <span class="btn btn-default" id="choosfile"> <i class="fa fa-video-camera" aria-hidden="true"></i> Choose file</sapn>
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-default" id="btn-sbm">Upload</button>
+                    </div>
+                </div>
 
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-header" style="background: #810c15;">
+                    Upload Infomation 
+                </div>
+                <div class="content">
+                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Thông tin video</th>
+                                <th>Ngày học (*)</th>
+                                <th>Giờ học</th>
+                                <th>Loại lớp</th>
+                                <th>Giáo viên</th>
+                                <th>Trợ giảng</th>
+                                <th>Người quay</th>
+                                <th>Tình trạng video</th>
+                                <th>Ghi chú chi tiết</th>
+                                <th>Mã video</th>
+                                <th>Username</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <div class="null">
+                        <!--<p class="text-center h5" id="message">Dữ liệu trống ...</p>-->
+                    </div>
+                    <div class="result">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="call_datepicker"></div>
 
 <!-- Button trigger modal -->
@@ -189,8 +193,8 @@
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 14px;
-    color: #810c15;
-    font-weight: bold;">
+     color: #810c15;
+     font-weight: bold;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background: #810c14;color: #FFF;">
@@ -198,7 +202,7 @@
                 <h4 class="modal-title" id="myModalLabel">Error</h4>
             </div>
             <div class="modal-body">
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
@@ -212,8 +216,8 @@
 
 <!-- Modal -->
 <div class="modal fade" id="myModal_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 14px;
-    color: #810c15;
-    font-weight: bold;">
+     color: #810c15;
+     font-weight: bold;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background: #810c14;color: #FFF;">

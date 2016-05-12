@@ -101,7 +101,7 @@ class Upload extends MY_Controller {
         $date = date('Y-m-d');
         $config = array();
         $config ['upload_path'] = './uploads';
-        $config ['allowed_types'] = 'mp4|wmv';
+        $config ['allowed_types'] = '*';
         $config['overwrite'] = FALSE;
         $config['remove_spaces'] = TRUE;
         $config['encrypt_name'] = TRUE;
@@ -136,11 +136,11 @@ class Upload extends MY_Controller {
 
     public function check_data() {
         /* Dữ liệu giả lập */
-//        $this->load->model('m_user');
-//        $return = $this->m_user->check_login('tungnd@topica.edu.vn');
-//
-//        $json_data = json_encode($return);
-//        $this->session->set_userdata('user_profile', $json_data);
+        $this->load->model('m_user');
+        $return = $this->m_user->check_login('tungnd@topica.edu.vn');
+
+        $json_data = json_encode($return);
+        $this->session->set_userdata('user_profile', $json_data);
 
         $number_file = $this->input->post('number');
         /* end */

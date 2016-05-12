@@ -18,25 +18,25 @@ class MY_Controller extends CI_Controller {
         parent::__construct();
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $this->_setting_config();
-        if ($this->require_login()) {
-            if (!$this->session->userdata('user_profile')) {
-                redirect(site_url('login'));
-            }
-        }
-        if (!$this->check_permission()) {
-            if ($this->input->is_ajax_request()) {
-                $data = array(
-                    'status' => 0,
-                    'message' => "Bạn không có quyền truy cập chức năng này !"
-                );
-                echo json_encode($data);
-                exit;
-            } else {
-                echo "<h3 style='text-align:center;color:red;'>Bạn không có quyền truy cập chức năng này !</h3>";
-                echo "<p style='text-align:center'><a href=" . site_url('home') . ">Home</a></p>";
-                exit;
-            }
-        }
+//        if ($this->require_login()) {
+//            if (!$this->session->userdata('user_profile')) {
+//                redirect(site_url('login'));
+//            }
+//        }
+//        if (!$this->check_permission()) {
+//            if ($this->input->is_ajax_request()) {
+//                $data = array(
+//                    'status' => 0,
+//                    'message' => "Bạn không có quyền truy cập chức năng này !"
+//                );
+//                echo json_encode($data);
+//                exit;
+//            } else {
+//                echo "<h3 style='text-align:center;color:red;'>Bạn không có quyền truy cập chức năng này !</h3>";
+//                echo "<p style='text-align:center'><a href=" . site_url('home') . ">Home</a></p>";
+//                exit;
+//            }
+//        }
     }
 
     protected function check_permission() {
