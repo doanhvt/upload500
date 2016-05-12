@@ -34,6 +34,12 @@ $(document).ready(function () {
             ajax_data(obj);
         }
     });
+    
+    $(document).on("click", "#close", function (e) {
+        e.preventDefault();
+        $('#Iswait').hide();
+        $('#wait').hide();
+    });
 
 });
 
