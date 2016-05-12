@@ -135,7 +135,7 @@ class Upload extends MY_Controller {
 //
 //        $json_data = json_encode($return);
 //        $this->session->set_userdata('user_profile', $json_data);
-//        $number_file = $this->input->post('number');
+       $number_file = $this->input->post('number');
         /* end */
 
         $user_profile = json_decode($this->session->userdata('user_profile'));

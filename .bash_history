@@ -64,3 +64,19 @@ git status
 git fetch origin
 git merge origin/doanhvt
 git push origin master
+git status
+git fetch origin
+git merge origin/doanhvt
+git push origin master
+git status
+git commit -am "sua thong bao phan quyen"
+git push origin master
+git status
+git fetch origin
+git merge origin/doanhvt
+git push origin master
+git status
+git fetch origin
+git merge/tungnd
+git merge origin/tungnd
+git push origin master
