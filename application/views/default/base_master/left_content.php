@@ -57,14 +57,14 @@
         <b class="arrow"></b>
 
         <ul class="submenu">
-            <li class="">
+<!--            <li class="">
                 <a href="tables.html">
                     <i class="menu-icon fa fa-caret-right"></i>
                     Phân quyền tài khoản
                 </a>
 
                 <b class="arrow"></b>
-            </li>
+            </li>-->
 
             <li class="">
                 <a href="<?php echo site_url('list_user'); ?>">

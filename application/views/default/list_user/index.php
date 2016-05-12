@@ -44,6 +44,16 @@
                                 <?php
                                     }
                                 ?>
+                            </select><br><br>
+                            <label for='account_type'><b>Loại tài khoản:</b></label><br>
+                            <select name="account_type">
+                                <?php
+                                    foreach ($list_account_type as $list_account_type_item){
+                                        ?>
+                                        <option value="<?php echo $list_account_type_item->id ?>"><?php echo $list_account_type_item->name; ?></option>
+                                <?php
+                                    }
+                                ?>
                             </select>
                         </form>
                     </div>
@@ -94,6 +104,7 @@
                         <th>Tài khoản</th>
                         <th>Tên hiển thị</th>
                         <th>Quyền</th>
+                        <th>Loại tài khoản</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -108,6 +119,7 @@
                                 <td><?php echo $list_user_item->email; ?></td>
                                 <td><?php echo $list_user_item->display_name; ?></td>
                                 <td><?php echo $list_user_item->name; ?></td>
+                                <td><?php echo $list_user_item->account_type_name;?></td>
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons">
                                         <button data-toggle="modal" data-target="#editModal" class="green edit_info" value="<?php echo $list_user_item->id; ?>"  url="<?php echo site_url('list_user/get_ajax_data_edit_user/' . $list_user_item->id); ?>">

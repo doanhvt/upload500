@@ -39,13 +39,13 @@
                             }
                         </script>
 
-                        <ul class="breadcrumb">
+<!--                        <ul class="breadcrumb">
                             <li>
                                 <i class="ace-icon fa fa-home home-icon"></i>
                                 <a href="#">Home</a>
                             </li>
                             <li class="active">Dashboard</li>
-                        </ul><!-- /.breadcrumb -->
+                        </ul> /.breadcrumb -->
 
 <!--                        <div class="nav-search" id="nav-search">
                             <form class="form-search">
