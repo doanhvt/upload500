@@ -173,7 +173,7 @@
                                 <td><?php echo $user_info->email; ?></td>
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons">
-                                        <button link_video="<?php echo base_url('uploads/'.$item->link_video); ?>" class="blue btn-view" data-toggle="modal" data-target="#myModal">
+                                        <button link_video="<?php echo $item->link_video?>" class="blue btn-view" data-toggle="modal" data-target="#myModal">
                                             <i class="ace-icon fa fa-eye bigger-130"></i>
                                         </button>
 

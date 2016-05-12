@@ -8,7 +8,7 @@ class M_list_video extends CI_Model {
 
     public function get_list_video() {
         $this->db->select("*");
-        $this->db->from("video_copy");
+        $this->db->from("video");
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -19,7 +19,7 @@ class M_list_video extends CI_Model {
 
     public function get_one_video($id) {
         $this->db->select("*");
-        $this->db->from("video_copy");
+        $this->db->from("video");
         $this->db->where("id",$id);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
@@ -54,7 +54,7 @@ class M_list_video extends CI_Model {
     public function fetch_data($limit, $start) {
         $this->db->limit($limit, $start);
         $this->db->select("*");
-        $this->db->from("video_copy");
+        $this->db->from("video");
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -65,7 +65,7 @@ class M_list_video extends CI_Model {
 
     public function get_list_normal_search($value) {
         $this->db->select('vc.*');
-        $this->db->from('video_copy as vc');
+        $this->db->from('video as vc');
         $this->db->join('user as u', 'vc.user_id = u.id');
         $this->db->where('u.active', 1);
         $this->db->like('u.display_name', $value);
@@ -81,7 +81,7 @@ class M_list_video extends CI_Model {
 
     public function normal_search($limit, $start, $value) {
         $this->db->select('vc.*');
-        $this->db->from('video_copy as vc');
+        $this->db->from('video as vc');
         $this->db->join('user as u', 'vc.user_id = u.id');
         $this->db->where('u.active', 1);
         $this->db->like('u.display_name', $value);

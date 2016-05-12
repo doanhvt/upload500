@@ -42,7 +42,7 @@ class List_video extends MY_Controller {
         $video = $this->m_list_video->get_one_video($id);
         if ($video) {
             //Get the file from whatever the user uploaded (NOTE: Users needs to upload first), @See http://localhost/CI/index.php/upload
-            $data = file_get_contents(base_url('uploads/'.$video->link_video));
+            $data = file_get_contents($video->link_video);
             //Read the file's contents
             $name = $video->link_video;
 
