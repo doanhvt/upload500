@@ -101,8 +101,8 @@
                         <h4 class="modal-title text-center">Video</h4>
                     </div>
                     <div class="modal-body">
-                        <video id="view-video" width="100%" height="100%" controls>
-                            <source src="Rihanna - Diamonds.mp4" type="video/mp4">
+                        <video id="view-video" width="100%" controls>
+                            <source src="" type="">
                             Your browser does not support the video tag.
                         </video>
                     </div>
@@ -173,7 +173,7 @@
                                 <td><?php echo $user_info->email; ?></td>
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons">
-                                        <button link_video="<?php echo $item->link_video?>" class="blue btn-view" data-toggle="modal" data-target="#myModal">
+                                        <button type_video="<?php echo $item->format_file; ?>" link_video="<?php echo $item->link_video?>" class="blue btn-view" data-toggle="modal" data-target="#myModal">
                                             <i class="ace-icon fa fa-eye bigger-130"></i>
                                         </button>
 

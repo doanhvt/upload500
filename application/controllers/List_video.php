@@ -18,7 +18,7 @@ class List_video extends MY_Controller {
         $config = array();
         $config["base_url"] = base_url("list_video/index");
         $config["total_rows"] = count($this->m_list_video->get_list_video());
-        $config["per_page"] = 2;
+        $config["per_page"] = 10;
         $config["uri_segment"] = 3;
         $config['num_tag_open'] = '<div style="text-align: center;background-color:#810c15;width:30px;height:30px;display:inline-block;color:white;margin:1px;border-radius:3px 3px 3px 3px;border:1px solid #EEEEEE">';
         $config['num_tag_close'] = '</div>';
@@ -91,7 +91,7 @@ class List_video extends MY_Controller {
         $config = array();
         $config["base_url"] = base_url("list_video/normal_search");
 //        $config["total_rows"] = count($data);
-        $config["per_page"] = 2;
+        $config["per_page"] = 10;
         $config["uri_segment"] = 3;
         $config['num_tag_open'] = '<div style="text-align: center;background-color:#810c15;width:30px;height:30px;display:inline-block;color:white;margin:1px;border-radius:3px 3px 3px 3px;border:1px solid #EEEEEE">';
         $config['num_tag_close'] = '</div>';

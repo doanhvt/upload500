@@ -15,7 +15,7 @@ class List_user extends MY_Controller {
         $data['list_role'] = $this->m_user->get_list_permission();
         $config["base_url"] = base_url("list_user/index");
         $config["total_rows"] = count($this->m_user->get_list_user());
-        $config["per_page"] = 5;
+        $config["per_page"] = 10;
         $config["uri_segment"] = 3;
         $config['num_tag_open'] = '<div style="text-align: center;background-color:#810c15;width:30px;height:30px;display:inline-block;color:white;margin:1px;border-radius:3px 3px 3px 3px;border:1px solid #EEEEEE">';
         $config['num_tag_close'] = '</div>';
@@ -125,7 +125,7 @@ class List_user extends MY_Controller {
         $config = array();
         $config["base_url"] = base_url("list_user/user_search");
 //        $config["total_rows"] = count($data);
-        $config["per_page"] = 1;
+        $config["per_page"] = 10;
         $config["uri_segment"] = 3;
         $config['num_tag_open'] = '<div style="text-align: center;background-color:#810c15;width:30px;height:30px;display:inline-block;color:white;margin:1px;border-radius:3px 3px 3px 3px;border:1px solid #EEEEEE">';
         $config['num_tag_close'] = '</div>';
