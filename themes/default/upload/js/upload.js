@@ -30,11 +30,12 @@ $(document).ready(function () {
             alert("File không được để trống.");
             return false;
         } else {
+            $('#btn-sbm').attr('disabled', 'disabled');
             var obj = $('.e_form_submit');
             ajax_data(obj);
         }
     });
-    
+
     $(document).on("click", "#close", function (e) {
         e.preventDefault();
         $('#Iswait').hide();
@@ -64,10 +65,42 @@ function ajax_data(obj) {
                 });
                 $('.modal-body').html(temp);
             }
+            var sucess = [];
+            var error = [];
+            $.each(result, function (idx, obj) {
+                if (obj.status == true) {
+                    $.each(obj.msg, function (id, val) {
+                        $('#success_' + idx).html("<i class='ace-icon glyphicon glyphicon-ok'></i>");
+                        sucess.push(idx);
+                    });
+                    $('#Iswait').hide();
+                    $('#wait').hide();
+                    $('#myModal_1').modal({
+                        show: 'false',
+                    });
+                } else {
+                    /*error upload*/
+                    $.each(obj.msg, function (id, val) {
+                        $('#error_' + idx).html("<i class='ace-icon glyphicon glyphicon-remove'></i>");
+                        error.push(idx);
+                    });
+                    $('#Iswait').hide();
+                    $('#wait').hide();
+                }
+            });
+            if(sucess.length != 0){
+                var number_video_success = 'Số video upload thành công ' + sucess.length;
+                $('#success_true').html(number_video_success);
+            }
+            if(error.length != 0){
+                var number_video_error = 'Số video upload thành công ' + error.length;
+                $('#success_false').html(number_video_error);
+            }
+            
         }, error: function () {
 
         }, complete: function () {
-
+            $('#btn-sbm').removeAttr('disabled');
         }
     });
 }

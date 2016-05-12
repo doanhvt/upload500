@@ -44,6 +44,10 @@ class Upload extends MY_Controller {
         $data_return = array();
         $type = $_FILES['userfile']['name'];
         $files = $_FILES;
+        $message = array();
+        $error = array();
+        $data_result = array();
+        $k = 1;
         for ($i = 0; $i < $total_videos; ++$i) {
             $_FILES['userfile']['name'] = $files['userfile']['name'] [$i];
             $_FILES['userfile']['type'] = $files ['userfile']['type'] [$i];
@@ -74,11 +78,11 @@ class Upload extends MY_Controller {
                 $data['note'] = $data_post['note_' . $i];
                 $data['status_upload'] = 1;
                 // Insert data for current file
-                $message[$i]['success_' . $i] = $this->m_upload->add_video($data);
+                $message['message'][$i]['video ' . $k] = $this->m_upload->add_video($data);
                 // Message thông báo
                 $data_return = array(
                     'status' => TRUE,
-                    'msg' => $message[$i]
+                    'msg' => $message['message'][$i]
                 );
             } else {
                 $error[$i]['error' . $i] = $this->upload->display_errors();
@@ -87,8 +91,10 @@ class Upload extends MY_Controller {
                     'msg' => $error[$i]
                 );
             }
+            $k++;
+            $data_result[] = $data_return;
         }
-        echo json_encode($data_return);
+        echo json_encode($data_result);
     }
 
     private function __set_upload_options() {
@@ -197,7 +203,10 @@ class Upload extends MY_Controller {
                         . '<p id="email"><span>' . $name . '</span></p>'
                         . '</td>';
                 $select .= '<td class="center">
-                                
+                                <span style="color: #33CC33;font-size: 16px;line-height: 55px;" id="success_' . $i . '">
+                                </span>
+                                <span style="color: #810c15;font-size: 16px;line-height: 55px;" id="error_' . $i . '">
+                                </span>
                             </td>';
                 $select .= "</tr>";
                 $datepicker .= '<script type="text/javascript">
