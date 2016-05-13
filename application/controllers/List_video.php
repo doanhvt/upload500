@@ -52,6 +52,9 @@ class List_video extends MY_Controller {
             echo "Video không tồn tại !";
         }
     }
+    public function get_ajax_data_edit_user(){
+        
+    }
 
     public function page() {
         $data = Array();
