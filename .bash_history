@@ -89,3 +89,12 @@ git merge origin/tungnd
 git status
 git commit -am "fix conflict"
 git push origin master
+git status
+git commit -am "sua load upload"
+git push origin master
+git fetch origin
+git merge origin/doanhvt
+git push origin master
+git status
+git fetch origin
+git merge origin/tungnd

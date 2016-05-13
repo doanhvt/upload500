@@ -20,6 +20,7 @@
 </div><!-- /.sidebar-shortcuts -->
 
 <ul class="nav nav-list">
+
     <li class="active">
         <a href="<?php echo site_url('home') ?>">
             <i class="menu-icon fa fa-tachometer"></i>

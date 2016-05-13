@@ -29,6 +29,7 @@ class Login extends MY_Controller {
                     // Nếu tồn tại trong db thì login không thì tài khoản của chưa dk cấp quyền
 					if($infoUser['email']){
 						$return = $this->m_user->check_login($infoUser['email']);
+						$this->session->set_userdata('user_picture', $infoUser['picture']);
 						if($return){
 							$json_data = json_encode($return);
 							$this->session->set_userdata('user_profile', $json_data);
