@@ -69,9 +69,6 @@
                     <div class="form-group">
                         <button type="submit" class=" form-control" style="margin-top:26px;background-color: #810c15;color:white;"  id="submit-search">FILTER</button>
                     </div>
-                    <div class="form-group">
-                        <button class="form-control" style="margin-top:30px;background-color: #810c15;color:white;">RESET</button>
-                    </div>
                 </div>
             </form>
 
