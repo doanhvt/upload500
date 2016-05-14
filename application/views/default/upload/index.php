@@ -108,6 +108,7 @@
         </div>  
     </div>
 </div>
+<div id="url_class_type" data_url_class="<?php echo $ajax_link_class;?>"></div>
 <form action="<?php echo $ajax_link; ?>" method="POST" enctype="multipart/form-data" role="form" class="e_form_submit">
     <div class="row" style="margin-top: 5%">
         <div class="col-md-12">
@@ -130,11 +131,39 @@
 
         </div>
     </div>
+     <style>
+        .progress {
+            position: relative;
+            border: 1px solid #ddd;
+/*            padding: 1px;*/
+            border-radius: 3px;
+            background: #FFF;
+        }
+        .bar {
+            background-color: #B4F5B4;
+            width: 0%;
+            height: 20px;
+            border-radius: 3px;
+        }
+        .percent {
+            position: absolute;
+            display: inline-block;
+            top: 0px;
+            left: 48%;
+        }
+    </style>
     <div class="row" style="height: 80px;padding: 10px;">
-        <div class="col-md-12">
-            <p class="text-center" id="Iswait" style="display: none;font-weight: bold;">
-                <label class="text-center">Vui lòng đợi</label> <br/>
-                <img style="width: 6%;" src="<?php echo $this->path_theme_file; ?>upload/img/LoaderIcon.gif" alt="" title=""/>
+        <div class="col-md-12" id="Iswait" style="display: none;">
+            <p class="text-center" style="font-weight: bold;">
+                <label class="text-center">Vui lòng đợi ...</label> <br/>
+            <div class="col-md-6 col-md-offset-3">
+                <div class="progress">
+                    <div class="bar"></div>
+                    <div class="percent">0%</div>
+                </div>
+                <div id="status"></div>
+            </div>
+            
             </p>
         </div>
     </div>

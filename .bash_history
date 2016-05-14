@@ -98,3 +98,17 @@ git push origin master
 git status
 git fetch origin
 git merge origin/tungnd
+git status
+ls
+git status
+git fetch origin
+git fetch origin
+git status
+git push origin master
+git status
+git commit -am  "sua conflic upload js"
+git commit -am "sua conflic upload js"
+git push origin master
+git status
+git commit -am "fix base"
+git push origin master
