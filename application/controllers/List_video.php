@@ -48,12 +48,29 @@ class List_video extends MY_Controller {
 
             //use this function to force the session/browser to download the file uploaded by the user 
             force_download($name, $data);
-        }else{
+        } else {
             echo "Video không tồn tại !";
         }
     }
-    public function get_ajax_data_edit_user(){
-        
+
+    public function edit_video() {
+        if ($this->input->post()) {
+            $update_data = array(
+                'note' => $this->input->post('note_video')
+            );
+            $this->m_list_video->edit_video($this->input->post('id_video'), $update_data);
+            $data_return = array(
+                'status' => 1,
+                'message' => 'Sửa thông tin video thành công !'
+            );
+            echo json_encode($data_return);
+        } else {
+            $data_return = array(
+                'status' => 2,
+                'message' => 'Sửa thông tin video không thành công !'
+            );
+            echo json_encode($data_return);
+        }
     }
 
     public function page() {
@@ -134,28 +151,31 @@ class List_video extends MY_Controller {
                             $html.= "<td>" . $class_check->name . "</td>";
                         }
                     }
-                    $html .= "<td>" . $user_info->display_name . "</td>";
+                    $html .= "<td>" . $data_search_item->name_teacher . "</td>";
                     $html .= "<td>" . $data_search_item->assistant . "</td>";
                     $html .= "<td>" . $data_search_item->cameramen . "</td>";
-                    $html .= "<td>" . $data_search_item->status_video . "</td>";
+                    $html .= "<td>" . $data_search_item->des . "</td>";
                     $html .= "<td>" . $data_search_item->note . "</td>";
                     $html .= "<td>" . $data_search_item->video_code . "</td>";
                     $html .= "<td>" . $user_info->email . "</td>";
 
                     $html .= "<td>";
+
                     $html .= "<div class='hidden-sm hidden-xs action-buttons'>
-                    <a class='blue' href='" . site_url('list_video/view_video') . "'>
-                        <i class='ace-icon fa fa-search-plus bigger-130'></i>
-                    </a>
+                                <button type_video='" . $data_search_item->format_file . "' link_video='" . $data_search_item->link_video . "' class='blue btn-view' data-toggle='modal' data-target='#myModal'>
+                                    <i class='ace-icon fa fa-eye bigger-130'></i>
+                                </button>
 
-                    <a class='green' href='#'>
-                        <i class='ace-icon fa fa-pencil bigger-130'></i>
-                    </a>
+                                <button class='green btn-edit' id_video='" . $data_search_item->id . "' note_video='" . $data_search_item->note . "' data-toggle='modal' data-target='#editModal'>
+                                            <i class='ace-icon fa fa-pencil bigger-130'></i>
+                                </button>
 
-                    <a class='red' href='#'>
-                        <i class='ace-icon fa fa-trash-o bigger-130'></i>
-                    </a>
-                </div>";
+                                <button class='red'>
+                                    <a href='" . site_url('list_video/download_video/' . $data_search_item->id) . "'> 
+                                        <i class='ace-icon fa fa-download bigger-130'></i>
+                                    <a/>             
+                                </button>
+                            </div>";
                     $html .= "</td>";
                     $count++;
                 }
@@ -205,7 +225,7 @@ class List_video extends MY_Controller {
                             $html.= "<td>" . $class_check->name . "</td>";
                         }
                     }
-                    $html .= "<td>" . $user_info->display_name . "</td>";
+                    $html .= "<td>" . $data_search_item->name_teacher . "</td>";
                     $html .= "<td>" . $data_search_item->assistant . "</td>";
                     $html .= "<td>" . $data_search_item->cameramen . "</td>";
                     $html .= "<td>" . $data_search_item->status_video . "</td>";
@@ -214,16 +234,179 @@ class List_video extends MY_Controller {
                     $html .= "<td>" . $user_info->email . "</td>";
                     $html .= "<td>";
                     $html .= "<div class='hidden-sm hidden-xs action-buttons'>
-                <a class='blue' href='" . site_url('list_video/view_video') . "'>
-                    <i class='ace-icon fa fa-search-plus bigger-130'></i>
-                </a>
-                <a class='green' href='#'>
-                    <i class='ace-icon fa fa-pencil bigger-130'></i>
-                </a>
-                <a class='red' href='#'>
-                    <i class='ace-icon fa fa-trash-o bigger-130'></i>
-                </a>
-            </div>";
+                                <button type_video='" . $data_search_item->format_file . "' link_video='" . $data_search_item->link_video . "' class='blue btn-view' data-toggle='modal' data-target='#myModal'>
+                                    <i class='ace-icon fa fa-eye bigger-130'></i>
+                                </button>
+
+                                <button class='green btn-edit' id_video='" . $data_search_item->id . "' note_video='" . $data_search_item->note . "' data-toggle='modal' data-target='#editModal'>
+                                            <i class='ace-icon fa fa-pencil bigger-130'></i>
+                                </button>
+
+                                <button class='red'>
+                                    <a href='" . site_url('list_video/download_video/' . $data_search_item->id) . "'> 
+                                        <i class='ace-icon fa fa-download bigger-130'></i>
+                                    <a/>             
+                                </button>
+                            </div>";
+                    $html .= "</td>";
+                    $count++;
+                }
+                $data_view['html'] = $html;
+                $content = $this->load->view($this->path_theme_view . "normal-search/index", $data_view, true);
+                $header_page = $this->load->view($this->path_theme_view . "normal-search/header", $data_view, true);
+                $title = NULL;
+                $description = NULL;
+                $this->master_page($content, $header_page, $title, $description);
+            }
+        }
+    }
+
+    public function advanced_search() {
+        /* Pagination */
+        $config = array();
+        $config["base_url"] = base_url("list_video/advanced_search");
+//        $config["total_rows"] = count($data);
+        $config["per_page"] = 1;
+        $config["uri_segment"] = 3;
+        $config['num_tag_open'] = '<div style="text-align: center;background-color:#810c15;width:30px;height:30px;display:inline-block;color:white;margin:1px;border-radius:3px 3px 3px 3px;border:1px solid #EEEEEE">';
+        $config['num_tag_close'] = '</div>';
+        $config['cur_tag_open'] = '<div style="text-align: center;background-color:#810c15;width:30px;height:30px;display:inline-block;color:white;margin:1px;border-radius:3px 3px 3px 3px;border:1px solid #EEEEEE">';
+        $config['cur_tag_close'] = '</div>';
+        $config['prev_link'] = FALSE;
+        $config['next_link'] = FALSE;
+        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+        if ($this->input->get()) {
+            $data_view['user_info'] = $user_info = $this->m_user->get_one_user(1);
+            $data_view['list_class'] = $list_class = $this->m_list_video->get_list_class();
+            $data_view['list_time'] = $list_time = $this->m_list_video->get_list_time();
+            $search_value = array(
+                'class_id' => $this->input->get('class-id'),
+                'name_teacher' => $this->input->get('teacher'),
+                'asistant' => $this->input->get('asistant'),
+                'class_date' => $this->input->get('start-date'),
+                'end_date' => $this->input->get('end-date'),
+                'time_id' => $this->input->get('hour')
+            );
+            $this->session->set_userdata(array('advanced-search' => $search_value));
+            $data = $this->m_list_video->get_list_advanced_search($search_value);
+            $config["total_rows"] = count($data);
+            $this->pagination->initialize($config);
+            $data["data_search"] = $data_search = $this->m_list_video->advanced_search($config["per_page"], $page, $search_value);
+            $data_view["links"] = $links = $this->pagination->create_links();
+            /* End pagination */
+            $html = "";
+            $count = 1;
+            if ($data_search) {
+                foreach ($data_search as $data_search_item) {
+                    $html .= "<tr>";
+                    $html .= "<td>" . $count . "</td>";
+                    $html .= "<td>" . $data_search_item->time_upload . "</td>";
+                    $html .= "<td>" . $data_search_item->class_date . "</td>";
+                    foreach ($list_time as $time_check) {
+                        if ($data_search_item->time_id == $time_check->id) {
+                            $html.= "<td>" . $time_check->start . " - " . $time_check->end . "</td>";
+                        }
+                    }
+                    foreach ($list_class as $class_check) {
+                        if ($data_search_item->class_id == $class_check->id) {
+                            $html.= "<td>" . $class_check->name . "</td>";
+                        }
+                    }
+                    $html .= "<td>" . $data_search_item->name_teacher . "</td>";
+                    $html .= "<td>" . $data_search_item->assistant . "</td>";
+                    $html .= "<td>" . $data_search_item->cameramen . "</td>";
+                    $html .= "<td>" . $data_search_item->des . "</td>";
+                    $html .= "<td>" . $data_search_item->note . "</td>";
+                    $html .= "<td>" . $data_search_item->video_code . "</td>";
+                    $html .= "<td>" . $user_info->email . "</td>";
+                    $html .= "<td>";
+                    $html .= "<div class='hidden-sm hidden-xs action-buttons'>
+                                <button type_video='" . $data_search_item->format_file . "' link_video='" . $data_search_item->link_video . "' class='blue btn-view' data-toggle='modal' data-target='#myModal'>
+                                    <i class='ace-icon fa fa-eye bigger-130'></i>
+                                </button>
+
+                                <button class='green btn-edit' id_video='" . $data_search_item->id . "' note_video='" . $data_search_item->note . "' data-toggle='modal' data-target='#editModal'>
+                                            <i class='ace-icon fa fa-pencil bigger-130'></i>
+                                </button>
+
+                                <button class='red'>
+                                    <a href='" . site_url('list_video/download_video/' . $data_search_item->id) . "'> 
+                                        <i class='ace-icon fa fa-download bigger-130'></i>
+                                    <a/>             
+                                </button>
+                            </div>";
+                    $html .= "</td>";
+                    $count++;
+                }
+                $data_view['html'] = $html;
+                $content = $this->load->view($this->path_theme_view . "normal-search/index", $data_view, true);
+                $header_page = $this->load->view($this->path_theme_view . "normal-search/header", $data_view, true);
+                $title = NULL;
+                $description = NULL;
+                $this->master_page($content, $header_page, $title, $description);
+            } else {
+                $data_view['user_info'] = $user_info = $this->m_user->get_one_user(1);
+                $data_view['list_class'] = $list_class = $this->m_list_video->get_list_class();
+                $data_view['list_time'] = $list_time = $this->m_list_video->get_list_time();
+                $data_view['search_session'] = '';
+                $content = $this->load->view($this->path_theme_view . "normal-search/index", $data_view, true);
+                $header_page = $this->load->view($this->path_theme_view . "normal-search/header", $data_view, true);
+                $title = NULL;
+                $description = NULL;
+                $this->master_page($content, $header_page, $title, $description);
+            }
+        } else {
+            $data_view['user_info'] = $user_info = $this->m_user->get_one_user(1);
+            $data_view['list_class'] = $list_class = $this->m_list_video->get_list_class();
+            $data_view['list_time'] = $list_time = $this->m_list_video->get_list_time();
+            $data_view['search_session_advanced'] = $search_session = $this->session->userdata('advanced-search');
+            $data = $this->m_list_video->get_list_advanced_search($search_session);
+            $config["total_rows"] = count($data);
+            $this->pagination->initialize($config);
+            $data_view["data_search"] = $data_search = $this->m_list_video->advanced_search($config["per_page"], $page, $search_session);
+            $data_view["links"] = $links = $this->pagination->create_links();
+            /* End pagination */
+            $html = "";
+            $count = 1;
+            if ($data_search) {
+                foreach ($data_search as $data_search_item) {
+                    $html .= "<tr>";
+                    $html .= "<td>" . $count . "</td>";
+                    $html .= "<td>" . $data_search_item->time_upload . "</td>";
+                    $html .= "<td>" . $data_search_item->class_date . "</td>";
+                    foreach ($list_time as $time_check) {
+                        if ($data_search_item->time_id == $time_check->id) {
+                            $html.= "<td>" . $time_check->start . " - " . $time_check->end . "</td>";
+                        }
+                    }
+                    foreach ($list_class as $class_check) {
+                        if ($data_search_item->class_id == $class_check->id) {
+                            $html.= "<td>" . $class_check->name . "</td>";
+                        }
+                    }
+                    $html .= "<td>" . $data_search_item->name_teacher . "</td>";
+                    $html .= "<td>" . $data_search_item->assistant . "</td>";
+                    $html .= "<td>" . $data_search_item->cameramen . "</td>";
+                    $html .= "<td>" . $data_search_item->status_video . "</td>";
+                    $html .= "<td>" . $data_search_item->note . "</td>";
+                    $html .= "<td>" . $data_search_item->video_code . "</td>";
+                    $html .= "<td>" . $user_info->email . "</td>";
+                    $html .= "<td>";
+                    $html .= "<div class='hidden-sm hidden-xs action-buttons'>
+                                <button type_video='" . $data_search_item->format_file . "' link_video='" . $data_search_item->link_video . "' class='blue btn-view' data-toggle='modal' data-target='#myModal'>
+                                    <i class='ace-icon fa fa-eye bigger-130'></i>
+                                </button>
+
+                                <button class='green btn-edit' id_video='" . $data_search_item->id . "' note_video='" . $data_search_item->note . "' data-toggle='modal' data-target='#editModal'>
+                                            <i class='ace-icon fa fa-pencil bigger-130'></i>
+                                </button>
+
+                                <button class='red'>
+                                    <a href='" . site_url('list_video/download_video/' . $data_search_item->id) . "'> 
+                                        <i class='ace-icon fa fa-download bigger-130'></i>
+                                    <a/>             
+                                </button>
+                            </div>";
                     $html .= "</td>";
                     $count++;
                 }

@@ -14,16 +14,16 @@
         </div>
         <div class="clearfix">
         </div>
-        <h3 class="header smaller lighter blue"><a id='advanced-search' href='#' style="background-color: #810c15;padding:3px;text-decoration: none;color:white;" href="#">Advanced search &nbsp;&nbsp;&nbsp;<b class="arrow fa fa-angle-down">&nbsp;</b></a></h3>
+        <h3 class="header smaller lighter blue"><a id='advanced-search' style="background-color: #810c15;padding:3px;text-decoration: none;color:white;">Advanced search &nbsp;&nbsp;&nbsp;<b class="arrow fa fa-angle-down">&nbsp;</b></a></h3>
         <div class="clearfix">
             <div class="pull-right tableTools-container"></div>
         </div>
         <div id='advanced-search-box'>
-            <form role='form'>
+            <form method="get" id="advanced-search-form" action="<?php echo site_url('list_video/advanced_search'); ?>">
                 <div style="width: 20%;float: left;margin-right:20px;">
                     <div class="form-group">
                         <label for="class"><b>Loại lớp</b></label>
-                        <select class="form-control" id="class">
+                        <select name="class-id" class="form-control" id="class">
                             <?php
                             foreach ($list_class as $class_item) {
                                 ?>
@@ -31,30 +31,29 @@
                                 <?php
                             }
                             ?>
-
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="teacher"><b>Giáo viên</b></label>
-                        <input type="text" class="form-control" id="teacher">
+                        <input name="teacher" type="text" class="form-control" id="teacher">
                     </div>
                     <div class="form-group">
                         <label for="asistant"><b>Trợ giảng</b></label>
-                        <input type="text" class="form-control" id="asistant">
+                        <input name="asistant" type="text" class="form-control" id="asistant">
                     </div>
                 </div>
                 <div class="input-daterange" style="width: 20%;float: left;margin-right:20px;">
                     <div class="form-group">
                         <label for="start"><b>Từ ngày</b></label>
-                        <input type="text" class="form-control" id="i_from_date">
+                        <input name="start-date" type="text" class="form-control" id="i_from_date">
                     </div>
                     <div class="form-group">
                         <label for="end"><b>Đến ngày</b></label>
-                        <input type="text" class="form-control" id="end">
+                        <input name="end-date" type="text" class="form-control" id="end">
                     </div>
                     <div class="form-group">
                         <label for="hour"><b>Giờ học</b></label>
-                        <select type="text" class="form-control" id="end">
+                        <select name="hour" type="text" class="form-control" >
                             <?php
                             foreach ($list_time as $time_item) {
                                 ?>
@@ -68,20 +67,14 @@
                 </div>
                 <div style="width: 10%;float: left;">
                     <div class="form-group">
-                        <input class="input-sm" style="margin-top:26px;background-color: #810c15;color:white;" type="submit" class="form-control" id="submit" value='FILTER'>
+                        <button type="submit" class=" form-control" style="margin-top:26px;background-color: #810c15;color:white;"  id="submit-search">FILTER</button>
                     </div>
                     <div class="form-group">
-                        <input class='input-sm' style="margin-top:30px;background-color: #810c15;color:white;" type="button" class="form-control" value='RESET'>
+                        <button class="form-control" style="margin-top:30px;background-color: #810c15;color:white;">RESET</button>
                     </div>
                 </div>
-                <!--                <div class="input-daterange input-group">
-                                    <input type="text" class="input-sm form-control" name='start' />
-                                    <span class='input-group-addon'>
-                                        <i class="fa fa-exchange"></i>
-                                    </span>
-                                    <input type='text' class='input-sm form-control'name='end'/>
-                                </div>-->
             </form>
+
         </div>
         <div class="clearfix">
         </div>
@@ -111,6 +104,28 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+        <!-- edit modal-->
+        <div id="editModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title text-center"><b>Edit video info</b></h4>
+                    </div>
+                    <div class="modal-body">
+                        <label><b>Ghi chú chi tiết: </b></label><br>
+                        <textarea id="note_video" style="width:100%;">                           
+                        </textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button note_video="" id_video="" url="<?php echo site_url('list_video/edit_video/'); ?>" id="edit-confirm" type="button" class="btn btn-default">Confirm</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -164,27 +179,27 @@
                                     }
                                     ?>
                                 </td>
-                                <td><?php echo $user_info->display_name; ?></td>
+                                <td><?php echo $item->name_teacher; ?></td>
                                 <td><?php echo $item->assistant; ?></td>
                                 <td><?php echo $item->cameramen; ?></td>
-                                <td><?php echo $item->status_video; ?></td>
+                                <td><?php echo $item->des; ?></td>
                                 <td><?php echo $item->note; ?></td>
                                 <td><?php echo $item->video_code; ?></td>
                                 <td><?php echo $user_info->email; ?></td>
                                 <td>
                                     <div class="hidden-sm hidden-xs action-buttons">
-                                        <button type_video="<?php echo $item->format_file; ?>" link_video="<?php echo $item->link_video?>" class="blue btn-view" data-toggle="modal" data-target="#myModal">
+                                        <button type_video="<?php echo $item->format_file; ?>" link_video="<?php echo $item->link_video ?>" class="blue btn-view" data-toggle="modal" data-target="#myModal">
                                             <i class="ace-icon fa fa-eye bigger-130"></i>
                                         </button>
 
-                                        <button class="green">
+                                        <button class="green btn-edit" id_video="<?php echo $item->id; ?>" note_video="<?php echo $item->note; ?>" data-toggle="modal" data-target="#editModal">
                                             <i class="ace-icon fa fa-pencil bigger-130"></i>
                                         </button>
 
                                         <button class="red">
-                                            <a href="<?php echo site_url('list_video/download_video/'.$item->id); ?>"> 
+                                            <a href="<?php echo site_url('list_video/download_video/' . $item->id); ?>"> 
                                                 <i class="ace-icon fa fa-download bigger-130"></i>
-                                            <a/>             
+                                                <a/>             
                                         </button>
                                     </div>
                                 </td>
