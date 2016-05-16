@@ -31,87 +31,128 @@ $(document).ready(function () {
             return false;
         } else {
             $('#btn-sbm').attr('disabled', 'disabled');
-            var obj = $('.e_form_submit');
-            $('#Iswait').show();
-            $('#wait').show();
-            ajax_data(obj);
+            var id_media = $('#id_video').attr('id_video');
+            upload(id_media);
             return;
         }
-    });
-
-    $(document).on("click", "#close", function (e) {
-        e.preventDefault();
-        $('#Iswait').hide();
-        $('#wait').hide();
     });
 
 });
 
 
-function ajax_data(obj) {
-    var url = obj.attr("action");
-    obj.ajaxSubmit({
-        type: "POST",
-        url: url,
+function upload(i) {
+    var obj = $('.e_form_submit');
+
+    var bar = $('.bar');
+    var percent = $('.percent');
+    var status = $('#status');
+
+    var date = obj.find('#datepicker-' + i).val();
+    var time = obj.find('.time_type_' + i).val();
+    var cls = obj.find('.class_type_' + i).val();
+    if (date.trim() == "") {
+        var id = i + 1;
+        alert("Mời bạn chọn ngày học của video " + id);
+        obj.find('#datepicker-' + i).focus();
+        var i = i;
+        $('#btn-sbm').removeAttr('disabled');
+        return (false);
+    }
+    if (time.trim() == 0) {
+        var id = i + 1;
+        alert("Mời bạn chọn giờ học của video " + id);
+        obj.find('.time_type_' + i).focus();
+        $('#btn-sbm').removeAttr('disabled');
+        return (false);
+    }
+
+    if (cls.trim() == 0) {
+        var id = i + 1;
+        alert("Mời bạn chọn loại lớp của video " + id);
+        obj.find('.class_type_' + i).focus();
+        var i = i;
+        $('#btn-sbm').removeAttr('disabled');
+        return (false);
+    }
+
+    var fileInput = document.getElementById("isfile");
+    var length = (fileInput.files.length) - 1;
+    var url_2 = $('.e_form_submit').attr('action');
+    var form = $('.e_form_submit').serialize();
+    data = new FormData();
+    data.append('userfile', $('#isfile')[0].files[i]);
+    data.append('form', form);
+    data.append('id', i);
+    $('#Iswait').show();
+    $.ajax({
+        method: "POST",
+        url: url_2,
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
         dataType: 'json',
-//        async: false,
-        success: function (result) {
-            if (result.error) {
-                $('#myModal').modal({
-                    show: 'false',
-                });
-                var temp = "";
-                var array = $.map(result.error, function (value, index) {
-                    temp += value;
-                });
-                $('.modal-body').html(temp);
-                $('#btn-sbm').removeAttr('disabled');
-            }
+        beforeSubmit: function () {
+            status.empty();
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        success: function (res) {
             var sucess = [];
             var error = [];
-            $.each(result, function (idx, obj) {
-                if (obj.status == true) {
-                    $.each(obj.msg, function (id, val) {
-                        $('#success_' + idx).html("<i class='ace-icon glyphicon glyphicon-ok'></i>");
-                        sucess.push(idx);
-                    });
-                    $('#myModal_1').modal({
-                        show: 'false',
-                    });
-                } else {
-                    /*error upload*/
-                    $.each(obj.msg, function (id, val) {
-                        $('#error_' + idx).html("<i class='ace-icon glyphicon glyphicon-remove'></i>");
-                        error.push(idx);
-                    });
-                    $('#myModal_1').modal({
-                        show: 'false',
-                    });
-
-                }
-            });
-            if (sucess.length !== 0) {
-                var number_video_success = 'Số video upload thành công ' + sucess.length;
-                $('#success_true').html(number_video_success);
-                return;
-            }
-            if (error.length !== 0) {
-                var number_video_error = 'Số video upload không thành công ' + error.length;
-                $('#success_false').html(number_video_error);
-                return;
+            if (res.status == true) {
+                var id_return = res.id + 1;
+                $('#id_video').attr('id_video', id_return);
+                $('#success_' + i).html("<i class='ace-icon glyphicon glyphicon-ok'></i>");
+                sucess.push(i);
+            } else {
+                var id_return_er = res.id;
+                $('#id_video').attr('id_video', id_return_er);
+                $('#error_' + i).html("<i class='ace-icon glyphicon glyphicon-remove'></i>");
+                error.push(i);
             }
 
+//            if (sucess.length !== 0) {
+//                $('#myModal').modal({
+//                    show: 'false',
+//                });
+//                var number_video_success = 'Số video upload thành công ' + sucess.length;
+//                $('#success_true').html(number_video_success);
+//                return;
+//            }
+//            if (error.length !== 0) {
+//                $('#myModal').modal({
+//                    show: 'false',
+//                });
+//                var number_video_error = 'Số video upload không thành công ' + error.length;
+//                $('#success_false').html(number_video_error);
+//                return;
+//            }
         }, error: function () {
 
         }, complete: function () {
             $('#btn-sbm').removeAttr('disabled');
-            $('#Iswait').hide();
-            $('#wait').hide();
+        },
+        progress: function (e) {
+            if (e.lengthComputable) {
+                var percentVal = Math.floor((e.loaded / e.total) * 100) + '%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            }
+        },
+    }).done(function () {
+        if (i < length) {
+            i++;
+            upload(i);
         }
     });
-    return false;
-}
 
+//    for (var i = 0, len = fileInput.files.length; i < len; i++) {
+//        alert(fileInput.files[i].name);
+//    }
+
+}
 
 function get_select_time(count_file) {
     var url = $('#url').attr('data-url');
@@ -130,34 +171,3 @@ function get_select_time(count_file) {
 
 
 
-//    $(document).on("submit", ".e_form_submit", function (e) {
-//        e.preventDefault();
-//        var obj = $(this);
-//        $('#Iswait').show();
-//        $('#wait').show();
-//        obj.ajaxSubmit({
-//            type: "POST",
-//            dataType: 'json',
-//            async: false,
-//            success: function (result) {
-//                if (result) {
-////                    $('#Iswait').hide();
-////                    $('#wait').hide();
-//                }
-//            }, error: function () {
-//
-//            }, complete: function () {
-//
-//            }
-//        });
-//    });
-
-/* Xử lý code video */
-//    $('.date').on('change', function () {
-//        var a = $(this).attr('value', $('.date').val());
-//        alert(a);
-//    });
-//    $("#datepicker-' . $i . '").blur(function () {
-//        var val = $(this).val();
-//        $("#code' . $i . '").text(val);
-//    });

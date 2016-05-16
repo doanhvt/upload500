@@ -19,6 +19,7 @@ class Upload extends MY_Controller {
     public function index() {
         $data = Array();
         $data['ajax_link'] = site_url('upload/do_upload_videos');
+        $data['ajax_link_class'] = site_url('upload/add_info');
         $content = $this->load->view($this->path_theme_view . "upload/index", $data, true);
         $header_page = $this->load->view($this->path_theme_view . "upload/head", $data, true);
         $title = NULL;
@@ -26,121 +27,177 @@ class Upload extends MY_Controller {
         $this->master_page($content, $header_page, $title, $description);
     }
 
-    public function do_upload_videos() {
-        $total_videos = count($_FILES['userfile']['name']);
-        $data_post = $this->input->post();
-        if ($this->input->is_ajax_request() && $data_post) {
-            $check_validate = $this->__validate_data($total_videos, $data_post);
-            if (!$check_validate) {
-                $this->__process_upload($total_videos, $data_post);
+    public function add_info() {
+        $data_type_class = $this->input->post('number_class');
+        $user_profile = json_decode($this->session->userdata('user_profile'));
+        $name = isset($user_profile) ? $user_profile[0]->email : "";
+        $id_name = substr($name, 0, strpos($name, "@"));
+        $data_return = array();
+        if ($data_type_class) {
+            switch ($data_type_class) {
+                case 1 :
+                    $data_return = array(
+                        'id' => 1,
+                        'name' => $id_name,
+                        'readonly' => 'readonly'
+                    );
+                    break;
+                case 2 :
+                    $data_return = array(
+                        'id' => 2,
+                        'name' => $id_name,
+                        'readonly' => 'readonly'
+                    );
+                    break;
+                case 3 :
+                    $data_return = array(
+                        'id' => 3,
+                        'name' => $id_name,
+                        'readonly' => 'readonly'
+                    );
+                    break;
+                case 4 :
+                    $data_return = array(
+                        'id' => 4,
+                        'name' => $id_name,
+                        'readonly' => 'readonly'
+                    );
+                    break;
             }
+            echo json_encode($data_return);
+        }
+    }
+
+    public function get_disks() {
+        if (php_uname('s') == 'Windows NT') {
+            // windows 
+            $disks = `fsutil fsinfo drives`;
+            $disks = str_word_count($disks, 1);
+            if ($disks[0] != 'Drives')
+                return '';
+            unset($disks[0]);
+            foreach ($disks as $key => $disk)
+                $disks[$key] = $disk . ':\\';
+            return $disks;
+        }else {
+            // unix 
+            $data = `mount`;
+            $data = explode(' ', $data);
+            $disks = array();
+            foreach ($data as $token)
+                if (substr($token, 0, 5) == '/dev/')
+                    $disks[] = $token;
+            return $disks;
+        }
+    }
+
+    public function check_freeg_disks() {
+        
+    }
+
+    public function do_upload_videos() {
+        $data_post = $this->input->post('form');
+        $id = (int) $this->input->post('id');
+        $sizeFile = (float) $_FILES['userfile']['size'];
+//        var_dump($sizeFile);
+//        $convertgb = number_format($sizeFile / (1024 * 1024), 3); /* - convert zise to GB -- */
+        $memoryDisk = $this->get_disks();
+        $current_disk_default = 'C:\\';
+        $free = @disk_free_space('C:\\');
+        $next_full_disk = "";
+        foreach ($memoryDisk as $key => $value) {
+            if ($value == $current_disk_default) {
+                if ($sizeFile > $free) {
+                    continue;
+                }
+                $next_full_disk = $value;
+            }
+            // Xử lý full ổ cứng
+        }
+
+//        $s = is_dir($next_full_disk . '/Users');
+
+        if ($this->input->is_ajax_request() && $data_post) {
+            $this->__process_upload($data_post, $id);
         } else {
             redirect();
         }
     }
 
-    private function __process_upload($total_videos, $data_post) {
-        $data = array();
-        $data_return = array();
-        $type = $_FILES['userfile']['name'];
-        $files = $_FILES;
-        $message = array();
-        $error = array();
-        $data_result = array();
-        $k = 1;
-        for ($i = 0; $i < $total_videos; ++$i) {
-            $_FILES['userfile']['name'] = $files['userfile']['name'] [$i];
-            $_FILES['userfile']['type'] = $files ['userfile']['type'] [$i];
-            $_FILES['userfile']['tmp_name'] = $files ['userfile']['tmp_name'] [$i];
-            $_FILES['userfile']['error'] = $files ['userfile']['error'] [$i];
-            $_FILES['userfile']['size'] = $files['userfile']['size'] [$i];
-            $this->upload->initialize($this->__set_upload_options());
-            if ($this->upload->do_upload('userfile')) {
-                $temp_file = (object) $this->upload->data();
-                $file_name = $temp_file->file_name;
-                $type_file = $temp_file->file_type;
-                // Output data
-                $date = date('Y-m-d');
-                $data['name'] = $file_name;
-                $data['link_video'] = base_url("/uploads/$date/$file_name");
-                $data['time_upload'] = date("Y-m-d H:i:s");
-                $data['class_date'] = $data_post['date_' . $i];
-                $data['time_id'] = $data_post['time_' . $i];
-                $data['class_id'] = $data_post['class_' . $i];
-                $data['video_code'] = $data_post['video_code_' . $i];
-                $data['note'] = $data_post['note_' . $i];
-                $data['name_teacher'] = $data_post['name_teacher_' . $i];
-                $data['assistant'] = $data_post['assistant_' . $i];
-                $data['cameramen'] = $data_post['cameramen_' . $i];
-                $data['format_file'] = $type_file;
-                $data['user_id'] = $data_post['user_id'];
-                $data['des'] = $data_post['des_' . $i];
-                $data['note'] = $data_post['note_' . $i];
-                $data['status_upload'] = 1;
-                // Insert data for current file
-                $message['message'][$i]['video ' . $k] = $this->m_upload->add_video($data);
-                // Message thông báo
-                $data_return = array(
-                    'status' => TRUE,
-                    'msg' => $message['message'][$i]
-                );
-            } else {
-                $error[$i]['error' . $i] = $this->upload->display_errors();
-                $data_return = array(
-                    'status' => FALSE,
-                    'msg' => $error[$i]
-                );
-            }
-            $k++;
-            $data_result[] = $data_return;
+    private function __process_upload($data_post, $id) {
+        $user_profile_uc = json_decode($this->session->userdata('user_profile'));
+        if ($user_profile_uc) {
+            $name_uc = isset($user_profile_uc) ? $user_profile_uc[0]->email : "";
         }
-        echo json_encode($data_result);
+        parse_str($data_post, $output_data);
+        $data_return = array();
+        $this->upload->initialize($this->__set_upload_options());
+        if ($this->upload->do_upload('userfile')) {
+            $temp_file = (object) $this->upload->data();
+            $file_name = $temp_file->file_name;
+            $type_file = $temp_file->file_ext;
+            $date = date('Y-m-d');
+            $data['name'] = $file_name;
+            $data['link_video'] = base_url("/uploads/$date/$name_uc/$file_name");
+            $data['time_upload'] = date("Y-m-d H:i:s");
+            $data['class_date'] = $output_data['date_' . $id];
+            $data['time_id'] = $output_data['time_' . $id];
+            $data['class_id'] = $output_data['class_' . $id];
+            $data['video_code'] = $output_data['video_code_' . $id];
+            $data['note'] = $output_data['note_' . $id];
+            $data['name_teacher'] = $output_data['name_teacher_' . $id];
+            $data['assistant'] = $output_data['assistant_' . $id];
+            $data['cameramen'] = $output_data['cameramen_' . $id];
+            $data['format_file'] = $type_file;
+            $data['user_id'] = $output_data['user_id'];
+            $data['des'] = $output_data['des_' . $id];
+            $data['note'] = $output_data['note_' . $id];
+            $data['status_upload'] = 1;
+
+            $this->m_upload->add_video($data);
+            $data_return = array(
+                'status' => TRUE,
+                'msg' => 'successful',
+                'id' => $id
+            );
+        } else {
+            $error = $this->upload->display_errors();
+            $data_return = array(
+                'status' => FALSE,
+                'msg' => $error,
+                'id' => $id
+            );
+        }
+        echo json_encode($data_return);
     }
 
     private function __set_upload_options() {
         $date = date('Y-m-d');
         $config = array();
-        $config ['upload_path'] = './uploads';
+//        $config ['upload_path'] = './uploads';
         $config ['allowed_types'] = '*';
         $config['overwrite'] = FALSE;
         $config['remove_spaces'] = TRUE;
         $config['encrypt_name'] = TRUE;
-        if (!is_dir('./uploads/' . $date . '/')) {
-            mkdir('./uploads/' . $date . '/', 0777, true);
-        }
-        $config['upload_path'] = './uploads/' . $date;
-        return $config;
-    }
-
-    private function __validate_data($total_vid, $data_post) {
-        $data_error['error'] = array();
-        $m = 1;
-        for ($j = 0; $j < $total_vid; ++$j) {
-            $this->form_validation->set_rules('date_' . $j, 'studying date of video "' . $m . '"', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('time_' . $j, 'studying time of video "' . $m . '"', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('class_' . $j, 'class type of video "' . $m . '"', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('video_code_' . $j, 'Code video of video "' . $m . '"', 'trim|required|xss_clean');
-            if ($this->form_validation->run() == FALSE) {
-                $data_error['error']['date_' . $j] = form_error('date_' . $j . '');
-                $data_error['error']['time_' . $j] = form_error('time_' . $j . '');
-                $data_error['error']['class_' . $j] = form_error('class_' . $j . '');
-                $data_error['error']['video_code_' . $j] = form_error('video_code_' . $j . '');
+        $user_profile_u = json_decode($this->session->userdata('user_profile'));
+        if ($user_profile_u) {
+            $name_u = isset($user_profile_u) ? $user_profile_u[0]->email : "";
+            if (!is_dir('./uploads/' . $date . '/' . $name_u)) {
+                mkdir('./uploads/' . $date . '/' . $name_u, 0777, true);
             }
-            $m++;
         }
-        if (count($data_error['error']) > 0) {
-            echo json_encode($data_error);
-            exit();
-        }
+        $config['upload_path'] = './uploads/' . $date . '/' . $name_u;
+//        $config ['upload_path'] = $next_full_disk . '/uploads/' . $date . '/' . $name_u;
+
+        return $config;
     }
 
     public function check_data() {
         /* Dữ liệu giả lập */
-//        $this->load->model('m_user');
-//        $return = $this->m_user->check_login('tungnd@topica.edu.vn');
-//
-//        $json_data = json_encode($return);
-//        $this->session->set_userdata('user_profile', $json_data);
+        $this->load->model('m_user');
+        $return = $this->m_user->check_login('tungnd@topica.edu.vn');
+        $json_data = json_encode($return);
+        $this->session->set_userdata('user_profile', $json_data);
 
         $number_file = $this->input->post('number');
         /* end */
@@ -151,33 +208,13 @@ class Upload extends MY_Controller {
         $userID = isset($user_profile) ? $user_profile[0]->id : "";
         $account_type = isset($user_profile) ? $user_profile[0]->account_type : "";
         $id_name = substr($name, 0, strpos($name, "@"));
-        $name_teacher = "";
-        $assistant = "";
-        $cameramen = "";
-        $readonly_tea = "";
-        $readonly_ass = "";
-        $readonly_came = "";
-        switch ($account_type) {
-            case 1 :
-                $name_teacher = $id_name;
-                $readonly_tea = 'readonly';
-                break;
-            case 2 :
-                $assistant = $id_name;
-                $readonly_ass = 'readonly';
-                break;
-            case 3 :
-                $cameramen = $id_name;
-                $readonly_came = 'readonly';
-                break;
-        }
         $data_return = array();
         if (isset($number_file)) {
             $select = "";
             $datepicker = "";
             $j = 1;
             for ($i = 0; $i < $number_file; ++$i) {
-                $select .= "<tr>";
+                $select .= '<tr>';
                 $select .= "<td class='text-center' style='line-height: 55px;'> video " . $j . "</td>";
                 $select .= '<td style="width: 10%;" id="date' . $i . '">
                                 <div class="input-group input-group-sm" style="padding-top: 6px;">
@@ -189,9 +226,9 @@ class Upload extends MY_Controller {
                             </td>';
                 $select .= "<td>" . $this->time_study($i) . "</td>";
                 $select .= "<td>" . $this->class_type($i, $account_type) . "</td>";
-                $select .= '<td><input type="text" size="5" id="name_teacher_' . $i . '" name="name_teacher_' . $i . '" class="input_v" value="' . $name_teacher . '" ' . $readonly_tea . '></td>';
-                $select .= '<td><input type="text" size="5" id="assistant_' . $i . '" name="assistant_' . $i . '" class="input_v" value="' . $assistant . '" ' . $readonly_ass . '></td>';
-                $select .= '<td><input type="text" size="5" id="cameramen_' . $i . '" name="cameramen_' . $i . '" class="input_v" value="' . $cameramen . '" ' . $readonly_came . '></td></td>';
+                $select .= '<td><input type="text" size="5" id="name_teacher_' . $i . '" name="name_teacher_' . $i . '" class="input_v" value=""></td>';
+                $select .= '<td><input type="text" size="5" id="assistant_' . $i . '" name="assistant_' . $i . '" class="input_v" value=""></td>';
+                $select .= '<td><input type="text" size="5" id="cameramen_' . $i . '" name="cameramen_' . $i . '" class="input_v" value=""></td></td>';
                 $select .= '<td><input type="text" size="5" id="des_' . $i . '" name="des_' . $i . '" class="input_v"></td>';
                 $select .= '<td><textarea rows="2" id="note" name="note_' . $i . '" role="textbox" multiline="true" class="editable"></textarea></td>';
                 $select .= '<td><input type="hidden" size="10" id="code_v' . $i . '" name="video_code_' . $i . '" value="" />'
@@ -214,7 +251,7 @@ class Upload extends MY_Controller {
                 $datepicker .= '<script type="text/javascript">
                     jQuery(function ($) {
                         $("#datepicker-' . $i . '").datepicker({
-                            format: "dd/mm/yyyy",
+                            format: "yyyy-mm-dd",
                             showOtherMonths: true,
                             selectOtherMonths: false,
                             autoclose: true,
@@ -252,15 +289,65 @@ class Upload extends MY_Controller {
                                         
                     $(".class_type_' . $i . '").change(function(){
                         var cl_type = $("option:selected", this).attr("data_class");
-                        $("#class_app_' . $i . '").text(cl_type + "_");
-                        var date = $("#code' . $i . '").text();
-                        var time = $("#time_app_' . $i . '").text();
-                        var cl = $("#class_app_' . $i . '").text(); 
-                        var name_t = $("#name_teacher_app_' . $i . '").text(); 
-                        var name_ass = $("#name_ass_app_' . $i . '").text(); 
-                        var tem = date + time + cl + name_t + name_ass;
-                        $("#code_v' . $i . '").attr("value",tem); 
-                        $("#code_v' . $i . '").attr("value",date_time_class);
+                        $("#class_app_' . $i . '").text(cl_type + "_");   
+                        var cls = $("option:selected", this).val();
+                        var url_class = $("#url_class_type").attr("data_url_class");    
+                        var data = {
+                                    "number_class" : cls
+                                };
+                        var success = function (result) {
+                            if(result.id == 1){
+                                $("#assistant_' . $i . '").attr("readonly", true);;
+                                $("#name_teacher_' . $i . '").attr("readonly", false);;    
+                                // remove value of input GV
+                                $("#name_teacher_' . $i . '").attr("value" ,"").focus().val(""); 
+                                $("#name_teacher_app_' . $i . '").empty(); 
+                                $("#assistant_' . $i . '").focus().val(result.name);     
+                                // End 
+                                
+                                // Add id = video de hien thi ma video
+                                $("#assistant_' . $i . '").attr("value" ,result.name);
+                                $("#name_ass_app_' . $i . '").text("_" + result.name);    
+                                // End 
+                                
+                                // Add vao value input code video
+                                var date = $("#code' . $i . '").text();
+                                var time = $("#time_app_' . $i . '").text();
+                                var cl = $("#class_app_' . $i . '").text(); 
+                                var name_t = $("#name_teacher_app_' . $i . '").text(); 
+                                var name_ass = $("#name_ass_app_' . $i . '").text();     
+                                var tem = date + time + cl + name_t + name_ass; 
+                                $("#code_v' . $i . '").attr("value",tem);
+                                // End
+                               
+                            }else{
+                                $("#name_teacher_' . $i . '").attr("readonly", true);
+                                $("#assistant_' . $i . '").attr("readonly", false);    
+                                // remove value of input Tro Giang
+                                $("#assistant_' . $i . '").attr("value" ,"").val(""); 
+                                $("#name_ass_app_' . $i . '").empty(); 
+                                $("#name_teacher_' . $i . '").focus().val(result.name);
+                                // End
+                                
+                                // Add id = video de hien thi ma video
+                                $("#name_teacher_' . $i . '").attr("value" ,result.name); 
+                                $("#name_teacher_app_' . $i . '").text(result.name);
+                                // End 
+                                
+                                // Add vao value input code video
+                                var date = $("#code' . $i . '").text();
+                                var time = $("#time_app_' . $i . '").text();
+                                var cl = $("#class_app_' . $i . '").text(); 
+                                var name_t = $("#name_teacher_app_' . $i . '").text(); 
+                                var name_ass = $("#name_ass_app_' . $i . '").text();     
+                                var tem = date + time + cl + name_t + name_ass;    
+                                $("#code_v' . $i . '").attr("value",tem);
+                                // End
+                                
+                            }
+                        };
+                        var dataType = "json";
+                        $.post(url_class, data, success, dataType);
                     });
                     
                     var data_ass = $("#assistant_' . $i . '").val();   
@@ -291,6 +378,7 @@ class Upload extends MY_Controller {
                         var tem = date + time + cl + name_t + name_ass;
                         $("#code_v' . $i . '").attr("value",tem); 
                     });
+                    
                     </script>';
                 $j++;
             }
@@ -314,7 +402,7 @@ class Upload extends MY_Controller {
     public function time_study($i) {
         $html = "";
         $html .= "<select name='time_$i' id='number' class='time_type_$i' disabled>";
-        $html .= '<option value="">---</option>';
+        $html .= '<option value="0">---</option>';
         $time = $this->m_time->get_time();
         if (isset($time)) {
             foreach ($time as $key => $value) {
@@ -331,23 +419,12 @@ class Upload extends MY_Controller {
         $class = $this->m_class->get_class();
         $html_class = "";
         $html_class = "<select name='class_$i' id='number' class='class_type_$i' disabled>";
-        $html_class .= '<option value="">---</option>';
         if (isset($class)) {
-            switch ($account_type) {
-                case 1 :
-                    $html_class .= '<option value="2" data_class="SC basic">SC basic</option>'
-                            . '<option value="3" data_class="SC inter">SC inter</option>'
-                            . '<option value="4" data_class="SB">SB</option>';
-                    break;
-                case 2 :
-                    $html_class .= '<option value="1" data_class="LS basic">LS basic</option>';
-                    break;
-                case 3 :
-                    foreach ($class as $key_class => $value_class) {
-                        $html_class .= '<option value="' . $value_class->id . '" data_class="' . $value_class->name . '">' . $value_class->name . '</option>';
-                    }
-                    break;
+            $html_class .= '<option value="0">---</option>';
+            foreach ($class as $key_class => $value_class) {
+                $html_class .= '<option value="' . $value_class->id . '" data_class="' . $value_class->name . '">' . $value_class->name . '</option>';
             }
+
             $html_class .= '</select>';
             return $html_class;
         } else {

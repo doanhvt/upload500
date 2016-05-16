@@ -129,3 +129,64 @@ function makeFileList() {
 //           }
 //        });
 //        console.log(info_file);
+
+//    var formData = new FormData($(".e_form_submit")[i]);
+//    var formData = new FormData(fileInput.files[i]);
+//    var formData = fileInput.files[i];
+//    var data = new FormData($('input[name^="userfile"]'));
+//        
+//    
+//    jQuery.each($('input[name^="userfile"]')[0].files, function (i, file) {
+//        data.append(i, file);
+//    });
+//var fileInput = document.getElementById("isfile");
+//var form = $('.e_form_submit').serialize();
+
+//+ '?' + form
+
+
+//    $(document).on("submit", ".e_form_submit", function (e) {
+//        e.preventDefault();
+//        var obj = $(this);
+//        $('#Iswait').show();
+//        $('#wait').show();
+//        obj.ajaxSubmit({
+//            type: "POST",
+//            dataType: 'json',
+//            async: false,
+//            success: function (result) {
+//                if (result) {
+////                    $('#Iswait').hide();
+////                    $('#wait').hide();
+//                }
+//            }, error: function () {
+//
+//            }, complete: function () {
+//
+//            }
+//        });
+//    });
+
+/* Xử lý code video */
+//    $('.date').on('change', function () {
+//        var a = $(this).attr('value', $('.date').val());
+//        alert(a);
+//    });
+//    $("#datepicker-' . $i . '").blur(function () {
+//        var val = $(this).val();
+//        $("#code' . $i . '").text(val);
+//    });
+
+//http://stackoverflow.com/questions/7023457/get-input-type-file-value-when-it-has-multiple-files-selected
+//https://www.raymondcamden.com/2013/09/10/Adding-a-file-display-list-to-a-multifile-upload-HTML-control/
+//https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/multiple
+//http://stackoverflow.com/questions/3654179/retrieving-file-names-out-of-a-multi-file-upload-control-with-javascript
+//http://stackoverflow.com/questions/19295746/how-to-upload-multiple-files-using-php-jquery-and-ajax
+//http://malsup.github.io/demo/progress.html
+//HTML5 multiple file upload: upload one by one through AJAX
+//http://stackoverflow.com/questions/13656066/html5-multiple-file-upload-upload-one-by-one-through-ajax
+//http://zinoui.com/blog/ajax-file-upload
+//https://www.new-bamboo.co.uk/blog/2012/01/10/ridiculously-simple-ajax-uploads-with-formdata/
+//http://stackoverflow.com/questions/21044798/how-to-use-formdata-for-ajax-file-upload
+//http://stackoverflow.com/questions/13656066/html5-multiple-file-upload-upload-one-by-one-through-ajax
+//http://stackoverflow.com/questions/11208488/how-to-add-an-array-value-to-new-formdata
