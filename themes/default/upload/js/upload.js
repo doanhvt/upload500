@@ -99,6 +99,11 @@ function upload(i) {
             percent.html(percentVal);
         },
         success: function (res) {
+            if(res.status == 0){
+                $('#Iswait').hide();
+                alert(res.message);
+                return false;
+            }
             var sucess = [];
             var error = [];
             if (res.status == true) {
@@ -133,7 +138,7 @@ function upload(i) {
 
         }, complete: function () {
             $('#btn-sbm').removeAttr('disabled');
-//            $('#Iswait').hide();
+           
         },
         progress: function (e) {
             if (e.lengthComputable) {

@@ -89,7 +89,7 @@ class Upload extends MY_Controller {
         if ($this->upload->do_upload('userfile')) {
             $temp_file = (object) $this->upload->data();
             $file_name = $temp_file->file_name;
-            $type_file = $temp_file->file_type;
+            $type_file = $temp_file->file_ext;
             $date = date('Y-m-d');
             $data['name'] = $file_name;
             $data['link_video'] = base_url("/uploads/$date/$name_uc/$file_name");

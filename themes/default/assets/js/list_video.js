@@ -12,8 +12,9 @@ $(document).ready(function () {
     });
     $('.btn-view').click(function () {
         var link_video = $(this).attr('link_video');
+        // alert(link_video);
 //        var type_video = $(this).attr('type_video');
-        var video = document.getElementById('view-video');
+        var video = document.getElementById('video');
         var sources = video.getElementsByTagName('source');
         sources[0].src = link_video;
 //        sources[0].type = type_video;
