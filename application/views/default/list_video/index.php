@@ -79,7 +79,6 @@
             Results
         </div>
         <!-- Trigger the modal with a button -->
-
         <!-- Modal -->
         <div id="myModal" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -92,7 +91,7 @@
                     </div>
                     <div class="modal-body">
                         <video id="view-video" width="100%" controls>
-                            <source src="" type="">
+                            <source src="" type="video/x-ms-wmv">
                             Your browser does not support the video tag.
                         </video>
                     </div>
