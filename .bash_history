@@ -112,3 +112,11 @@ git push origin master
 git status
 git commit -am "fix base"
 git push origin master
+git status
+git commit -am "bo da ngon ngu"
+git push origin master
+git status
+git fetch origin 
+git merge origin/doanhvt
+git push origin master
+git status

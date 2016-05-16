@@ -26,7 +26,7 @@ class Upload extends MY_Controller {
         $description = NULL;
         $this->master_page($content, $header_page, $title, $description);
     }
-
+    
     public function add_info() {
         $data_type_class = $this->input->post('number_class');
         $user_profile = json_decode($this->session->userdata('user_profile'));
@@ -69,78 +69,60 @@ class Upload extends MY_Controller {
     }
 
     public function do_upload_videos() {
-        $total_videos = count($_FILES['userfile']['name']);
-        $data_post = $this->input->post();
+        $data_post = $this->input->post('form');
+        $id = (int) $this->input->post('id');
         if ($this->input->is_ajax_request() && $data_post) {
-            $check_validate = $this->__validate_data($total_videos, $data_post);
-            if (!$check_validate) {
-                $this->__process_upload($total_videos, $data_post);
-            }
+            $this->__process_upload($data_post, $id);
         } else {
             redirect();
         }
     }
 
-    private function __process_upload($total_videos, $data_post) {
-        $data = array();
-        $data_return = array();
-        $type = $_FILES['userfile']['name'];
-        $files = $_FILES;
-        $message = array();
-        $error = array();
-        $data_result = array();
+    private function __process_upload($data_post, $id) {
         $user_profile_uc = json_decode($this->session->userdata('user_profile'));
         if ($user_profile_uc) {
             $name_uc = isset($user_profile_uc) ? $user_profile_uc[0]->email : "";
         }
-        $k = 1;
-        for ($i = 0; $i < $total_videos; ++$i) {
-            $_FILES['userfile']['name'] = $files['userfile']['name'] [$i];
-            $_FILES['userfile']['type'] = $files ['userfile']['type'] [$i];
-            $_FILES['userfile']['tmp_name'] = $files ['userfile']['tmp_name'] [$i];
-            $_FILES['userfile']['error'] = $files ['userfile']['error'] [$i];
-            $_FILES['userfile']['size'] = $files['userfile']['size'] [$i];
-            $this->upload->initialize($this->__set_upload_options());
-            if ($this->upload->do_upload('userfile')) {
-                $temp_file = (object) $this->upload->data();
-                $file_name = $temp_file->file_name;
-                $type_file = $temp_file->file_type;
-                // Output data
-                $date = date('Y-m-d');
-                $data['name'] = $file_name;
-                $data['link_video'] = base_url("/uploads/$date/$name_uc/$file_name");
-                $data['time_upload'] = date("Y-m-d H:i:s");
-                $data['class_date'] = $data_post['date_' . $i];
-                $data['time_id'] = $data_post['time_' . $i];
-                $data['class_id'] = $data_post['class_' . $i];
-                $data['video_code'] = $data_post['video_code_' . $i];
-                $data['note'] = $data_post['note_' . $i];
-                $data['name_teacher'] = $data_post['name_teacher_' . $i];
-                $data['assistant'] = $data_post['assistant_' . $i];
-                $data['cameramen'] = $data_post['cameramen_' . $i];
-                $data['format_file'] = $type_file;
-                $data['user_id'] = $data_post['user_id'];
-                $data['des'] = $data_post['des_' . $i];
-                $data['note'] = $data_post['note_' . $i];
-                $data['status_upload'] = 1;
-                // Insert data for current file
-                $message['message'][$i]['video ' . $k] = $this->m_upload->add_video($data);
-                // Message thông báo
-                $data_return = array(
-                    'status' => TRUE,
-                    'msg' => $message['message'][$i]
-                );
-            } else {
-                $error[$i]['error' . $i] = $this->upload->display_errors();
-                $data_return = array(
-                    'status' => FALSE,
-                    'msg' => $error[$i]
-                );
-            }
-            $k++;
-            $data_result[] = $data_return;
+        parse_str($data_post, $output_data);
+        $data_return = array();
+        $this->upload->initialize($this->__set_upload_options());
+        if ($this->upload->do_upload('userfile')) {
+            $temp_file = (object) $this->upload->data();
+            $file_name = $temp_file->file_name;
+            $type_file = $temp_file->file_type;
+            $date = date('Y-m-d');
+            $data['name'] = $file_name;
+            $data['link_video'] = base_url("/uploads/$date/$name_uc/$file_name");
+            $data['time_upload'] = date("Y-m-d H:i:s");
+            $data['class_date'] = $output_data['date_' . $id];
+            $data['time_id'] = $output_data['time_' . $id];
+            $data['class_id'] = $output_data['class_' . $id];
+            $data['video_code'] = $output_data['video_code_' . $id];
+            $data['note'] = $output_data['note_' . $id];
+            $data['name_teacher'] = $output_data['name_teacher_' . $id];
+            $data['assistant'] = $output_data['assistant_' . $id];
+            $data['cameramen'] = $output_data['cameramen_' . $id];
+            $data['format_file'] = $type_file;
+            $data['user_id'] = $output_data['user_id'];
+            $data['des'] = $output_data['des_' . $id];
+            $data['note'] = $output_data['note_' . $id];
+            $data['status_upload'] = 1;
+
+            $this->m_upload->add_video($data);
+            $data_return = array(
+                'status' => TRUE,
+                'msg' => 'successful',
+                'id' => $id
+            );
+        } else {
+            $error = $this->upload->display_errors();
+            $data_return = array(
+                'status' => FALSE,
+                'msg' => $error,
+                'id' => $id
+            );
         }
-        echo json_encode($data_result);
+        echo json_encode($data_return);
     }
 
     private function __set_upload_options() {
@@ -163,33 +145,10 @@ class Upload extends MY_Controller {
         return $config;
     }
 
-    private function __validate_data($total_vid, $data_post) {
-        $data_error['error'] = array();
-        $m = 1;
-        for ($j = 0; $j < $total_vid; ++$j) {
-            $this->form_validation->set_rules('date_' . $j, 'studying date of video "' . $m . '"', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('time_' . $j, 'studying time of video "' . $m . '"', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('class_' . $j, 'class type of video "' . $m . '"', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('video_code_' . $j, 'Code video of video "' . $m . '"', 'trim|required|xss_clean');
-            if ($this->form_validation->run() == FALSE) {
-                $data_error['error']['date_' . $j] = form_error('date_' . $j . '');
-                $data_error['error']['time_' . $j] = form_error('time_' . $j . '');
-                $data_error['error']['class_' . $j] = form_error('class_' . $j . '');
-                $data_error['error']['video_code_' . $j] = form_error('video_code_' . $j . '');
-            }
-            $m++;
-        }
-        if (count($data_error['error']) > 0) {
-            echo json_encode($data_error);
-            exit();
-        }
-    }
-
     public function check_data() {
         /* Dữ liệu giả lập */
         // $this->load->model('m_user');
         // $return = $this->m_user->check_login('tungnd@topica.edu.vn');
-
         // $json_data = json_encode($return);
         // $this->session->set_userdata('user_profile', $json_data);
 
@@ -208,7 +167,7 @@ class Upload extends MY_Controller {
             $datepicker = "";
             $j = 1;
             for ($i = 0; $i < $number_file; ++$i) {
-                $select .= "<tr>";
+                $select .= '<tr>';
                 $select .= "<td class='text-center' style='line-height: 55px;'> video " . $j . "</td>";
                 $select .= '<td style="width: 10%;" id="date' . $i . '">
                                 <div class="input-group input-group-sm" style="padding-top: 6px;">
@@ -396,7 +355,7 @@ class Upload extends MY_Controller {
     public function time_study($i) {
         $html = "";
         $html .= "<select name='time_$i' id='number' class='time_type_$i' disabled>";
-        $html .= '<option value="">---</option>';
+        $html .= '<option value="0">---</option>';
         $time = $this->m_time->get_time();
         if (isset($time)) {
             foreach ($time as $key => $value) {
@@ -414,7 +373,7 @@ class Upload extends MY_Controller {
         $html_class = "";
         $html_class = "<select name='class_$i' id='number' class='class_type_$i' disabled>";
         if (isset($class)) {
-            $html_class .= '<option value="">---</option>';
+            $html_class .= '<option value="0">---</option>';
             foreach ($class as $key_class => $value_class) {
                 $html_class .= '<option value="' . $value_class->id . '" data_class="' . $value_class->name . '">' . $value_class->name . '</option>';
             }

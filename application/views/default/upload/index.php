@@ -108,8 +108,9 @@
         </div>  
     </div>
 </div>
-<div id="url_class_type" data_url_class="<?php echo $ajax_link_class;?>"></div>
+<div id="url_class_type" data_url_class="<?php echo $ajax_link_class; ?>"></div>
 <form action="<?php echo $ajax_link; ?>" method="POST" enctype="multipart/form-data" role="form" class="e_form_submit">
+    <div id="id_video" id_video="0"></div>
     <div class="row" style="margin-top: 5%">
         <div class="col-md-12">
 
@@ -131,7 +132,7 @@
 
         </div>
     </div>
-     <style>
+    <style>
         .progress {
             position: relative;
             border: 1px solid #ddd;
@@ -154,26 +155,19 @@
     </style>
     <div class="row" style="height: 80px;padding: 10px;">
         <div class="col-md-12" id="Iswait" style="display: none;">
-            <p class="text-center" style="font-weight: bold;">
+            <div class="text-center" style="font-weight: bold;">
                 <label class="text-center">Vui lòng đợi ...</label> <br/>
-            <div class="col-md-6 col-md-offset-3">
-                <div class="progress">
-                    <div class="bar"></div>
-                    <div class="percent">0%</div>
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="progress">
+                        <div class="bar"></div>
+                        <div class="percent">0%</div>
+                    </div>
+                    <div id="status"></div>
                 </div>
-                <div id="status"></div>
             </div>
-            
-            </p>
         </div>
     </div>
     <div class="row" style="margin-top: 0%;position: relative;">
-        <div class="col-md-12" id="wait" style="position: absolute;z-index: 999;width: 98%;margin-left: 13px;height: 100%;background-color: rgba(192,192,195,0.5);top:38px;display: none;">
-            <p class="text-center" style="padding-top: 52px;">
-                <img src="<?php echo $this->path_theme_file; ?>upload/img/loading-spiral.gif" alt="" title=""/>
-            </p>
-        </div>
-
         <div class="col-md-12">
             <div class="table-header" style="background: #810c15;">
                 Upload Infomation 
@@ -216,33 +210,14 @@
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary btn-lg hidden" data-toggle="modal" data-target="#myModal"></button>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 14px;
-    color: #810c15;
-    font-weight: bold;">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background: #810c14;color: #FFF;">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" id="close">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Error</h4>
-            </div>
-            <div class="modal-body">
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary btn-lg hidden" data-toggle="modal" data-target="#myModal_1"></button>
+<button type="button" class="btn btn-primary btn-lg hidden" data-toggle="modal" data-target="#myModal"></button>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 14px;
-    color: #810c15;
-    font-weight: bold;">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="font-size: 14px;
+     color: #810c15;
+     font-weight: bold;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="background: #810c14;color: #FFF;">
@@ -252,6 +227,7 @@
             <div class="modal-body">
                 <p id="success_true" style="font-size: 17px;"></p>
                 <p id="success_false" style="font-size: 17px;"></p>
+                <p id="false" style="font-size: 17px;"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="location.reload();">Close</button>

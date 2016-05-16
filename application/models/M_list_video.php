@@ -116,6 +116,7 @@ class M_list_video extends CI_Model {
         } else {
             return FALSE;
         }
+
     }
 
     public function advanced_search($limit, $start, $value) {
