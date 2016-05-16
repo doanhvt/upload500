@@ -23,7 +23,7 @@
 
     <li class="active">
         <a href="<?php echo site_url('home') ?>">
-            <i class="menu-icon fa fa-tachometer"></i>
+            <i class="menu-icon fa fa-home"></i>
             <span class="menu-text">Trang chủ</span>
         </a>
 
