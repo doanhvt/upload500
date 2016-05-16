@@ -68,46 +68,6 @@ class Upload extends MY_Controller {
         }
     }
 
-    public function add_info() {
-        $data_type_class = $this->input->post('number_class');
-        $user_profile = json_decode($this->session->userdata('user_profile'));
-        $name = isset($user_profile) ? $user_profile[0]->email : "";
-        $id_name = substr($name, 0, strpos($name, "@"));
-        $data_return = array();
-        if ($data_type_class) {
-            switch ($data_type_class) {
-                case 1 :
-                    $data_return = array(
-                        'id' => 1,
-                        'name' => $id_name,
-                        'readonly' => 'readonly'
-                    );
-                    break;
-                case 2 :
-                    $data_return = array(
-                        'id' => 2,
-                        'name' => $id_name,
-                        'readonly' => 'readonly'
-                    );
-                    break;
-                case 3 :
-                    $data_return = array(
-                        'id' => 3,
-                        'name' => $id_name,
-                        'readonly' => 'readonly'
-                    );
-                    break;
-                case 4 :
-                    $data_return = array(
-                        'id' => 4,
-                        'name' => $id_name,
-                        'readonly' => 'readonly'
-                    );
-                    break;
-            }
-            echo json_encode($data_return);
-        }
-    }
     public function do_upload_videos() {
         $data_post = $this->input->post('form');
         $id = (int) $this->input->post('id');
@@ -168,7 +128,7 @@ class Upload extends MY_Controller {
     private function __set_upload_options() {
         $date = date('Y-m-d');
         $config = array();
-//        $config ['upload_path'] = './uploads';
+        $config ['upload_path'] = './uploads';
         $config ['allowed_types'] = '*';
         $config['overwrite'] = FALSE;
         $config['remove_spaces'] = TRUE;
@@ -187,7 +147,6 @@ class Upload extends MY_Controller {
 
     public function check_data() {
         /* Dữ liệu giả lập */
-        
         // $this->load->model('m_user');
         // $return = $this->m_user->check_login('tungnd@topica.edu.vn');
         // $json_data = json_encode($return);
