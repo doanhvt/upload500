@@ -26,7 +26,7 @@ class Upload extends MY_Controller {
         $description = NULL;
         $this->master_page($content, $header_page, $title, $description);
     }
-
+    
     public function add_info() {
         $data_type_class = $this->input->post('number_class');
         $user_profile = json_decode($this->session->userdata('user_profile'));
@@ -68,55 +68,49 @@ class Upload extends MY_Controller {
         }
     }
 
-    public function get_disks() {
-        if (php_uname('s') == 'Windows NT') {
-            // windows 
-            $disks = `fsutil fsinfo drives`;
-            $disks = str_word_count($disks, 1);
-            if ($disks[0] != 'Drives')
-                return '';
-            unset($disks[0]);
-            foreach ($disks as $key => $disk)
-                $disks[$key] = $disk . ':\\';
-            return $disks;
-        }else {
-            // unix 
-            $data = `mount`;
-            $data = explode(' ', $data);
-            $disks = array();
-            foreach ($data as $token)
-                if (substr($token, 0, 5) == '/dev/')
-                    $disks[] = $token;
-            return $disks;
+    public function add_info() {
+        $data_type_class = $this->input->post('number_class');
+        $user_profile = json_decode($this->session->userdata('user_profile'));
+        $name = isset($user_profile) ? $user_profile[0]->email : "";
+        $id_name = substr($name, 0, strpos($name, "@"));
+        $data_return = array();
+        if ($data_type_class) {
+            switch ($data_type_class) {
+                case 1 :
+                    $data_return = array(
+                        'id' => 1,
+                        'name' => $id_name,
+                        'readonly' => 'readonly'
+                    );
+                    break;
+                case 2 :
+                    $data_return = array(
+                        'id' => 2,
+                        'name' => $id_name,
+                        'readonly' => 'readonly'
+                    );
+                    break;
+                case 3 :
+                    $data_return = array(
+                        'id' => 3,
+                        'name' => $id_name,
+                        'readonly' => 'readonly'
+                    );
+                    break;
+                case 4 :
+                    $data_return = array(
+                        'id' => 4,
+                        'name' => $id_name,
+                        'readonly' => 'readonly'
+                    );
+                    break;
+            }
+            echo json_encode($data_return);
         }
     }
-
-    public function check_freeg_disks() {
-        
-    }
-
     public function do_upload_videos() {
         $data_post = $this->input->post('form');
         $id = (int) $this->input->post('id');
-        $sizeFile = (float) $_FILES['userfile']['size'];
-//        var_dump($sizeFile);
-//        $convertgb = number_format($sizeFile / (1024 * 1024), 3); /* - convert zise to GB -- */
-        $memoryDisk = $this->get_disks();
-        $current_disk_default = 'C:\\';
-        $free = @disk_free_space('C:\\');
-        $next_full_disk = "";
-        foreach ($memoryDisk as $key => $value) {
-            if ($value == $current_disk_default) {
-                if ($sizeFile > $free) {
-                    continue;
-                }
-                $next_full_disk = $value;
-            }
-            // Xử lý full ổ cứng
-        }
-
-//        $s = is_dir($next_full_disk . '/Users');
-
         if ($this->input->is_ajax_request() && $data_post) {
             $this->__process_upload($data_post, $id);
         } else {
@@ -186,20 +180,20 @@ class Upload extends MY_Controller {
                 mkdir('./uploads/' . $date . '/' . $name_u, 0777, true);
             }
         }
-        $config['upload_path'] = './uploads/' . $date . '/' . $name_u;
-//        $config ['upload_path'] = $next_full_disk . '/uploads/' . $date . '/' . $name_u;
 
+        $config['upload_path'] = './uploads/' . $date . '/' . $name_u;
         return $config;
     }
 
     public function check_data() {
         /* Dữ liệu giả lập */
-//        $this->load->model('m_user');
-//        $return = $this->m_user->check_login('tungnd@topica.edu.vn');
-//        $json_data = json_encode($return);
-//        $this->session->set_userdata('user_profile', $json_data);
-//
-//        $number_file = $this->input->post('number');
+        
+        // $this->load->model('m_user');
+        // $return = $this->m_user->check_login('tungnd@topica.edu.vn');
+        // $json_data = json_encode($return);
+        // $this->session->set_userdata('user_profile', $json_data);
+
+        $number_file = $this->input->post('number');
         /* end */
 
 

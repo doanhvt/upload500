@@ -6,11 +6,23 @@ class M_user extends CI_Model {
         parent::__construct();
     }
 
-    public function user_search($limit, $start,$search_value) {
+    public function get_list_account() {
+        $this->db->select('*');
+        $this->db->from('account_type');
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function user_search($limit, $start, $search_value) {
         $this->db->limit($limit, $start);
-        $this->db->select("u.*,r.name");
+        $this->db->select("u.*,r.name,at.name as account_type_name");
         $this->db->from("user as u");
         $this->db->join("role as r", "u.role_id = r.id");
+        $this->db->join("account_type as at", "u.account_type = at.id");
         $this->db->where("u.active", 1);
         $this->db->where_in("email", $search_value);
         $this->db->or_where_in("display_name", $search_value);
@@ -78,8 +90,9 @@ class M_user extends CI_Model {
     }
 
     public function get_one_user($id) {
-        $this->db->select("u.*,r.name");
+        $this->db->select("u.*,r.name,at.name as account_type_name");
         $this->db->from("user as u");
+        $this->db->join("account_type as at", "u.account_type = at.id");
         $this->db->join("role as r", "u.role_id = r.id");
         $this->db->where("u.id", $id);
         $this->db->where("u.active", 1);
@@ -105,8 +118,9 @@ class M_user extends CI_Model {
 
     public function get_list_user_limit($limit, $start) {
         $this->db->limit($limit, $start);
-        $this->db->select("u.*,r.name");
+        $this->db->select("u.*,r.name,at.name as account_type_name");
         $this->db->from("user as u");
+        $this->db->join("account_type as at", "u.account_type = at.id");
         $this->db->join("role as r", "u.role_id = r.id");
         $this->db->where("u.active", 1);
         $query = $this->db->get();

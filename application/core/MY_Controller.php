@@ -2,9 +2,9 @@
 
 class MY_Controller extends CI_Controller {
 
-    var $user_id = null;
-    var $user_info = null;
-    var $site_config = null;
+	var $user_id = null;
+	var $user_info = null;
+	var $site_config = null;
 
     /**
      * Truyền biến bất quy tắc qua view, biến được gán giá trị trong hàm _setting_config()
@@ -15,53 +15,53 @@ class MY_Controller extends CI_Controller {
 //    var $path_static_file = "";
 
     public function __construct() {
-        parent::__construct();
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $this->_setting_config();
-        if ($this->require_login()) {
-            if (!$this->session->userdata('user_profile')) {
-                redirect(site_url('login'));
-            }
-        }
-        if (!$this->check_permission()) {
-            if ($this->input->is_ajax_request()) {
-                $data = array(
-                    'status' => 0,
-                    'message' => "Bạn không có quyền truy cập chức năng này !"
-                );
-                echo json_encode($data);
-                exit;
-            } else {
-                echo "<h3 style='text-align:center;color:red;'>Bạn không có quyền truy cập chức năng này !</h3>";
-                echo "<p style='text-align:center'><a href=" . site_url('home') . ">Home</a></p>";
-                exit;
-            }
-        }
+    	parent::__construct();
+    	date_default_timezone_set('Asia/Ho_Chi_Minh');
+    	$this->_setting_config();
+    	if ($this->require_login()) {
+    		if (!$this->session->userdata('user_profile')) {
+    			redirect(site_url('login'));
+    		}
+    	}
+    	if (!$this->check_permission()) {
+    		if ($this->input->is_ajax_request()) {
+    			$data = array(
+    				'status' => 0,
+    				'message' => "Bạn không có quyền truy cập chức năng này !"
+    				);
+    			echo json_encode($data);
+    			exit;
+    		} else {
+    			echo "<h3 style='text-align:center;color:red;'>Bạn không có quyền truy cập chức năng này !</h3>";
+    			echo "<p style='text-align:center'><a href=" . site_url('home') . ">Home</a></p>";
+    			exit;
+    		}
+    	}
     }
 
     protected function check_permission() {
-        $this->load->model('m_user');
-        $user_info = json_decode($this->session->userdata('user_profile'));
-        $role_id = $user_info[0]->role_id;
-        if ($role_id) {
-            $list_permission = $this->m_user->get_user_permissions($role_id);
-            $method = $this->router->fetch_method();
-            if (in_array($method, $list_permission) || ($method == 'index') || in_array('*', $list_permission)) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        } else {
-            return FALSE;
-        }
+    	$this->load->model('m_user');
+    	$user_info = json_decode($this->session->userdata('user_profile'));
+    	$role_id = $user_info[0]->role_id;
+    	if ($role_id) {
+    		$list_permission = $this->m_user->get_user_permissions($role_id);
+    		$method = $this->router->fetch_method();
+    		if (in_array($method, $list_permission) || ($method == 'index') || in_array('*', $list_permission)) {
+    			return TRUE;
+    		} else {
+    			return FALSE;
+    		}
+    	} else {
+    		return FALSE;
+    	}
     }
 
     protected function require_login() {
-        return true;
+    	return true;
     }
 
     protected function master_page_blank($content, $header_page = NULL, $title = NULL, $description = NULL, $keywords = NULL, $canonical = NULL) {
-        $data["title"] = $title ? $title : "";
+    	$data["title"] = $title ? $title : "";
 
         $data["description"] = $description ? $description : ""; //THông tin này về sau sẽ cho vào cơ sở dữ liệu
         $data["keywords"] = $keywords;
@@ -81,9 +81,9 @@ class MY_Controller extends CI_Controller {
     }
 
     protected function master_page($content, $head_page = NULL, $title = NULL, $description = NULL) {
-        $data = Array();
-        /* Lấy thông tin phần head */
-        $data["title"] = $title ? $title : "Admin";
+    	$data = Array();
+    	/* Lấy thông tin phần head */
+    	$data["title"] = $title ? $title : "Admin";
         $data["description"] = $description ? $description : "Admin page"; //THông tin này về sau sẽ cho vào cơ sở dữ liệu
         /* head chung của các masterPage */ $data["header_base"] = $this->load->view($this->site_config->path_theme_view . "base_master/head", $data, TRUE);
         /* head riêng của các masterPage */
@@ -105,7 +105,7 @@ class MY_Controller extends CI_Controller {
     }
 
     protected function get_header($data = Array()) {
-        return $this->load->view($this->site_config->path_theme_view . "base_master/header", $data, TRUE);
+    	return $this->load->view($this->site_config->path_theme_view . "base_master/header", $data, TRUE);
     }
 
     protected function get_menu_bar($data = Array()) {
@@ -122,12 +122,12 @@ class MY_Controller extends CI_Controller {
 //        $data["logo"] = $this->path_static_file . "images/logo_white.png";
 //        $data["avatar"] = $this->path_static_file . "images/default_avatar.png";
 
-        return $this->load->view($this->site_config->path_theme_view . "base_master/menu_bar", $data, TRUE);
+    	return $this->load->view($this->site_config->path_theme_view . "base_master/menu_bar", $data, TRUE);
     }
 
     protected function get_left_content($data = Array()) {
-        $data["menu_data"] = $this->_get_left_content_data();
-        return $this->load->view($this->site_config->path_theme_view . "base_master/left_content", $data, TRUE);
+    	$data["menu_data"] = $this->_get_left_content_data();
+    	return $this->load->view($this->site_config->path_theme_view . "base_master/left_content", $data, TRUE);
     }
 
     protected function _get_left_content_data($data = Array()) {
@@ -160,7 +160,7 @@ class MY_Controller extends CI_Controller {
     }
 
     protected function get_breadcrumb($data = Array()) {
-        $data['params_num'] = $this->uri->total_segments();
+    	$data['params_num'] = $this->uri->total_segments();
 //        $permission = $this->session->userdata['permission'];
 //        $this->load->module('permission');
 //        $list_permission = $this->permission->get_list_permission($permission);
@@ -178,28 +178,28 @@ class MY_Controller extends CI_Controller {
 //        echo current_url();exit;
 //        echo $class = $this->router->fetch_class();exit;
 //        $method = $this->router->fetch_method();
-        return $this->load->view($this->site_config->path_theme_view . "base_master/breadcrumb", $data, TRUE);
+    	return $this->load->view($this->site_config->path_theme_view . "base_master/breadcrumb", $data, TRUE);
     }
 
     protected function get_right_content($data = Array()) {
-        return $this->load->view($this->site_config->path_theme_view . "base_master/right_content", $data, TRUE);
+    	return $this->load->view($this->site_config->path_theme_view . "base_master/right_content", $data, TRUE);
     }
 
     protected function get_footer($data = Array()) {
-        return $this->load->view($this->site_config->path_theme_view . "base_master/footer", $data, TRUE);
+    	return $this->load->view($this->site_config->path_theme_view . "base_master/footer", $data, TRUE);
     }
 
     private function _setting_config() {
-        $this->site_config = new stdClass();
-        $this->site_config->theme_name = "default";
-        $this->site_config->path_theme_view = $this->site_config->theme_name . "/";
-        $this->site_config->path_theme_file = base_url("themes/" . $this->site_config->theme_name) . "/";
+    	$this->site_config = new stdClass();
+    	$this->site_config->theme_name = "default";
+    	$this->site_config->path_theme_view = $this->site_config->theme_name . "/";
+    	$this->site_config->path_theme_file = base_url("themes/" . $this->site_config->theme_name) . "/";
 //        $this->site_config->path_static_file = base_url("static/") . "/";
 //        $this->site_config->favicon_link = $this->site_config->path_static_file . "icons/favicon.png";
 
-        /* Truyền biến bất quy tắc qua view */
-        $this->path_theme_view = $this->site_config->path_theme_view;
-        $this->path_theme_file = $this->site_config->path_theme_file;
+    	/* Truyền biến bất quy tắc qua view */
+    	$this->path_theme_view = $this->site_config->path_theme_view;
+    	$this->path_theme_file = $this->site_config->path_theme_file;
 //        $this->path_static_file = $this->site_config->path_static_file;
 //        $this->favicon_link = $this->site_config->path_static_file . "icons/favicon.png";
     }

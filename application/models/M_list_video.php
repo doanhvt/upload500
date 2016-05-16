@@ -6,6 +6,11 @@ class M_list_video extends CI_Model {
         parent::__construct();
     }
 
+    public function edit_video($id, $data_update) {
+        $this->db->where('id', $id);
+        $this->db->update('video', $data_update);
+    }
+
     public function get_list_video() {
         $this->db->select("*");
         $this->db->from("video");
@@ -20,7 +25,7 @@ class M_list_video extends CI_Model {
     public function get_one_video($id) {
         $this->db->select("*");
         $this->db->from("video");
-        $this->db->where("id",$id);
+        $this->db->where("id", $id);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->first_row();
@@ -87,6 +92,42 @@ class M_list_video extends CI_Model {
         $this->db->like('u.display_name', $value);
         $this->db->or_like('vc.assistant', $value);
         $this->db->or_like('u.email', $value);
+        $this->db->limit($limit, $start);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+    }
+
+    public function get_list_advanced_search($value) {
+        $this->db->select('*');
+        $this->db->from('video');
+        $this->db->where('class_id', $value['class_id']);
+        $this->db->where('name_teacher', $value['name_teacher']);
+        $this->db->where('assistant', $value['asistant']);
+        $this->db->where('class_date >=', $value['class_date']);
+        $this->db->where('class_date <=', $value['end_date']);
+        $this->db->where('time_id', $value['time_id']);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return FALSE;
+        }
+
+    }
+
+    public function advanced_search($limit, $start, $value) {
+        $this->db->select('*');
+        $this->db->from('video');
+        $this->db->where('class_id', $value['class_id']);
+        $this->db->where('name_teacher', $value['name_teacher']);
+        $this->db->where('assistant', $value['asistant']);
+        $this->db->where('class_date >=', $value['class_date']);
+        $this->db->where('class_date <=', $value['end_date']);
+        $this->db->where('time_id', $value['time_id']);
         $this->db->limit($limit, $start);
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
