@@ -14,6 +14,7 @@ class M_list_video extends CI_Model {
     public function get_list_video() {
         $this->db->select("*");
         $this->db->from("video");
+        $this->db->order_by("id", "desc");
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -60,6 +61,7 @@ class M_list_video extends CI_Model {
         $this->db->limit($limit, $start);
         $this->db->select("*");
         $this->db->from("video");
+        $this->db->order_by("id", "desc");
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -76,6 +78,7 @@ class M_list_video extends CI_Model {
         $this->db->like('u.display_name', $value);
         $this->db->or_like('vc.assistant', $value);
         $this->db->or_like('u.email', $value);
+        $this->db->order_by("vc.id", "desc");
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -93,6 +96,7 @@ class M_list_video extends CI_Model {
         $this->db->or_like('vc.assistant', $value);
         $this->db->or_like('u.email', $value);
         $this->db->limit($limit, $start);
+        $this->db->order_by("vc.id", "desc");
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -110,6 +114,7 @@ class M_list_video extends CI_Model {
         $this->db->where('class_date >=', $value['class_date']);
         $this->db->where('class_date <=', $value['end_date']);
         $this->db->where('time_id', $value['time_id']);
+        $this->db->order_by("id", "desc");
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
@@ -129,6 +134,7 @@ class M_list_video extends CI_Model {
         $this->db->where('class_date <=', $value['end_date']);
         $this->db->where('time_id', $value['time_id']);
         $this->db->limit($limit, $start);
+        $this->db->order_by("id", "desc");
         $query = $this->db->get();
         if ($query->num_rows() > 0) {
             return $query->result();
